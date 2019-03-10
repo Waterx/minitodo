@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>自在Todo</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+
+<body>
+    <h1>TODO</h1>
+    <form action=/add method="post">
+        <input type="text" name="title">
+        <input type="text" name="comments">
+        <button>Submit</button>
+    </form>
+    <div class="todo_container">
+        <div class="todo_cell">
+            <label>
+                <input type="checkbox" />
+                <span class="todo_title">This is a todo cell</span>
+            </label>
+        </div>
+        <div class="todo_cell">
+            <label>
+                <input type="checkbox" checked="checked" />
+                <span class="todo_title">This is a todo cell done</span>
+            </label>
+        </div>
+    </div>
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+
+        var ajax = function (method, path, headers, data, reseponseCallback) {
+            var r = new XMLHttpRequest()
+            // 设置请求方法和请求地址
+            r.open(method, path, true)
+            // 设置发送的数据的格式
+            r.setRequestHeader('Content-Type', 'application/json')
+            // 注册响应函数
+            r.onreadystatechange = function () {
+                if (r.readyState === 4) {
+                    reseponseCallback(r)
+                }
+                // if (r.readyState === 4) {
+                //     console.log('state change', r, r.status, r.response)
+                //     var response = JSON.parse(r.response)
+                //     console.log('response', response)
+                // } else {
+                //     console.log('change')
+                // }
+            }
+            // 发送请求
+            r.send(data)
+        }
+
+        let todos = undefined
+        ajax('GET', '/all', null, '', function (r) {
+            todos = JSON.parse(r.response)
+            console.log(typeof (todos))
+            inserTodos(todos)
+            //console.log(r.status, r.response)
+        })
+
+        let inserTodos = function (todos) {
+            for (let i in todos) {
+                console.log(i, ':', todos[i].title)
+                let checked = ''
+                if (todos[i].done === true) {
+                    flag = true
+                    checked = 'checked='
+                }
+                $('.todo_container').append(
+                    `
+                    <div class="todo_cell">
+                    <label>
+                    <input type="checkbox" ${checked}/>
+                    <span class="todo_title">${todos[i].title}</span>
+                    </label>
+                    </div>
+                    `
+                )
+            }
+        }
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
