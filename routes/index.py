@@ -40,7 +40,8 @@ def index():
 @main.route("/add", methods=['POST'])
 def add():
     form = request.form
-    print('add form', form)
+    print('!!add form', form)
+    # ImmutableMultiDict([('title', '的撒发射点法大师傅大师傅')])
     t = Todo.inserTodo(form)
     print(t)
     return redirect(url_for('.index'))
@@ -50,6 +51,16 @@ def all():
     import json
     list = Todo.getAll()
     return (list)
+
+@main.route("/check", methods=['POST'])
+def check():
+    json = request.get_json()
+    # 客户端用ajax请求时一般传过来的是json字符串，用get_json解析，返回的
+    # 时候也要转成json字符串传回去
+    print('!!check json', json['todo_id'])
+    result_id = Todo.toggleTodo(json)
+    print('!!OK check')
+    return result_id
 
 #
 # @main.route("/register", methods=['POST'])

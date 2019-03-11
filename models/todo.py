@@ -1,6 +1,7 @@
 import time
 from mongoengine import *
 import uuid
+import json
 
 connect('minitodo')
 
@@ -39,6 +40,24 @@ class Todo(Document):
         )
         t.save()
 
+
+    '''
+        该函数作用是改变todo的done值，返回todoid的字符串
+    '''
+    @classmethod
+    def toggleTodo(cls, form):
+        t = None
+        tid = form['todo_id']
+        print('tid',tid)
+        for todo in Todo.objects(todo_id=form.get('todo_id', '')):
+            t = todo
+            break
+        td = t.done
+        t.done = not td
+        t.save()
+        result = json.dumps(t.todo_id)
+        return result
+
     def todoDict(self):
         return {
             'title': self.title,
@@ -76,20 +95,21 @@ class Todox():
 # saaaaadaf
 # dddddddd
 
-
-list = Todo.objects()
-for l in list:
-
-    print(type(l), l.done, l.title)
-
-class User():
+#
+# list = Todo.objects()
+# for l in list:
+#     print(type(l), l.done, l.title)
+'''
+    class User():
     def __init__(self, name, salary):
         self.name = name
         self.salary = salary
+    u1 = User('laohe',40)
+    print(u1.__dict__)
+'''
 
-u1 = User('laohe',40)
-print(u1.__dict__)
-import json
-print(json.dumps(Todo.getAll()))
+# import json
+# print(json.dumps(Todo.getAll()))
+
 # for post in Todo.objects(done=False):
 #     print(post.title)

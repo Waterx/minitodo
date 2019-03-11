@@ -7,42 +7,47 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <style>
+        .todo_cell {
+            margin: 10px;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>TODO</h1>
+    <h2>TODO</h2>
     <form action=/add method="post">
         <input type="text" name="title">
-        <input type="text" name="comments">
         <button>Submit</button>
     </form>
+
     <div class="todo_container">
-        <div class="todo_cell">
+        <div class="todo_cell" data-id="4705">
             <label>
                 <input type="checkbox" />
-                <span class="todo_title">This is a todo cell</span>
+                <span class="todo_title">**TEST This is a todo cell</span>
             </label>
         </div>
-        <div class="todo_cell">
+        <div class="todo_cell" data-id="470s5">
             <label>
                 <input type="checkbox" checked="checked" />
-                <span class="todo_title">This is a todo cell done</span>
+                <span class="todo_title">**TEST This is a todo cell done</span>
             </label>
         </div>
     </div>
 
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script>
-
+        // 自己的 ajax 轮子
         var ajax = function (method, path, headers, data, reseponseCallback) {
             var r = new XMLHttpRequest()
             // 设置请求方法和请求地址
             r.open(method, path, true)
             // 设置发送的数据的格式
             r.setRequestHeader('Content-Type', 'application/json')
+            // r.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
             // 注册响应函数
             r.onreadystatechange = function () {
                 if (r.readyState === 4) {
@@ -59,18 +64,10 @@
             // 发送请求
             r.send(data)
         }
-
-        let todos = undefined
-        ajax('GET', '/all', null, '', function (r) {
-            todos = JSON.parse(r.response)
-            console.log(typeof (todos))
-            inserTodos(todos)
-            //console.log(r.status, r.response)
-        })
-
+        // 插入 todocell 的函数
         let inserTodos = function (todos) {
             for (let i in todos) {
-                console.log(i, ':', todos[i].title)
+                console.log(i, ':', todos[i])
                 let checked = ''
                 if (todos[i].done === true) {
                     flag = true
@@ -78,7 +75,7 @@
                 }
                 $('.todo_container').append(
                     `
-                    <div class="todo_cell">
+                    <div class="todo_cell" data-id="${todos[i].todo_id}">
                     <label>
                     <input type="checkbox" ${checked}/>
                     <span class="todo_title">${todos[i].title}</span>
@@ -88,10 +85,35 @@
                 )
             }
         }
+        let todos = undefined
+        ajax('GET', '/all', null, '', function (r) {
+            todos = JSON.parse(r.response)
+            console.log(typeof (todos))
+            inserTodos(todos)
+            //console.log(r.status, r.response)
+        })
 
+    </script>
+    <script>
+        // $('.todo_cell').click(function (event) {
+        //     console.log('clicked')
+        // })
+        $('.todo_container').click(function (event) {
+            target = event.target
+            todo_id = target.parentElement.parentElement.getAttribute('data-id')
+            if (target.classList.contains('todo_title')) {
+                console.log('clicked', todo_id)
+                var data = {
+                    'todo_id': todo_id,
+                }
+                data = JSON.stringify(data)
+                ajax('POST', '/check', null, data, function (r) {
+                    check = JSON.parse(r.response)
+                    console.log(check)
+                })
+            }
 
-
-
+        })
 
 
     </script>
