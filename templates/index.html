@@ -13,30 +13,39 @@
         .todo_cell {
             margin: 10px;
         }
+
+        main {
+            max-width: 640px;
+            margin: auto;
+            padding: 40px 0 30px 0;
+        }
     </style>
 </head>
 
 <body>
     <h2>TODO</h2>
-    <form action=/add method="post">
-        <input type="text" name="title">
-        <button>Submit</button>
-    </form>
+    <main>
+        <form action=/add method="post">
+            <input type="text" name="title">
+            <!-- <button>Submit</button> -->
+        </form>
 
-    <div class="todo_container">
-        <div class="todo_cell" data-id="4705">
-            <label>
-                <input type="checkbox" />
-                <span class="todo_title">**TEST This is a todo cell</span>
-            </label>
+        <div class="todo_container">
+            <div class="todo_cell row item card-panel hoverable" data-id="4705">
+                <label>
+                    <input class="checkbox" type="checkbox" />
+                    <span class="todo_title">**TEST This is a todo cell</span>
+                </label>
+            </div>
+            <div class="todo_cell row item card-panel hoverable" data-id="470s5">
+                <label>
+                    <input class="checkbox" type="checkbox" checked="checked" />
+                    <span class="todo_title">**TEST This is a todo cell done</span>
+                </label>
+            </div>
         </div>
-        <div class="todo_cell" data-id="470s5">
-            <label>
-                <input type="checkbox" checked="checked" />
-                <span class="todo_title">**TEST This is a todo cell done</span>
-            </label>
-        </div>
-    </div>
+    </main>
+
 
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script>
@@ -75,9 +84,9 @@
                 }
                 $('.todo_container').append(
                     `
-                    <div class="todo_cell" data-id="${todos[i].todo_id}">
+                    <div class="todo_cell row item card-panel hoverable" data-id="${todos[i].todo_id}">
                     <label>
-                    <input type="checkbox" ${checked}/>
+                    <input class="checkbox" type="checkbox" ${checked}/>
                     <span class="todo_title">${todos[i].title}</span>
                     </label>
                     </div>
@@ -95,6 +104,7 @@
 
     </script>
     <script>
+        // 这个 script 的用途为改变 done 的状态， 然后传给服务器
         // $('.todo_cell').click(function (event) {
         //     console.log('clicked')
         // })
