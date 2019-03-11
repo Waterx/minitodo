@@ -52,7 +52,10 @@ class Todo(Document):
         for todo in Todo.objects(todo_id=form.get('todo_id', '')):
             t = todo
             break
+        if t is None:
+            return 'wrong id'
         td = t.done
+
         t.done = not td
         t.save()
         result = json.dumps(t.todo_id)
