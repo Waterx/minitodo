@@ -40,16 +40,31 @@ class Todo(Document):
         )
         t.save()
 
+    '''
+        该函数作用是通过todo_id删除todo，返回todo_id的字符串
+        注意，这里的form实际上是一个json串
+    '''
+    @classmethod
+    def delTodo(cls, form):
+        tid = form['todo_id']
+        print(tid)
+        flag = Todo.objects(todo_id=tid).delete()
+        print('model todo', 'delTodo', flag)
+        if flag != 1:
+            return 'wrong delete'
+        return flag
+
 
     '''
-        该函数作用是改变todo的done值，返回todoid的字符串
+        该函数作用是改变todo的done值，返回todo_id的字符串
+        注意，这里的form实际上是一个json串
     '''
     @classmethod
     def toggleTodo(cls, form):
         t = None
         tid = form['todo_id']
-        print('tid',tid)
-        for todo in Todo.objects(todo_id=form.get('todo_id', '')):
+        print('model toggletodo', 'tid',tid)
+        for todo in Todo.objects(todo_id=tid):
             t = todo
             break
         if t is None:
@@ -116,3 +131,5 @@ class Todox():
 
 # for post in Todo.objects(done=False):
 #     print(post.title)
+
+Todo.delTodo({'todo_id': 'dd348eb4-43aa-11e9-8ca5-40e230d295fe'})

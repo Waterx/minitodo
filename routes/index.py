@@ -52,14 +52,23 @@ def all():
     list = Todo.getAll()
     return (list)
 
+@main.route("/delete", methods=['POST'])
+def delete():
+    json = request.get_json()
+    print('!!delete json', json['todo_id'])
+    result_status = Todo.delTodo(json)
+    return result_status
+
 @main.route("/check", methods=['POST'])
 def check():
     json = request.get_json()
+    ''' 返回数据如
+        {'todo_id': '42d9ea70-4248-11e9-a247-40e230d295fe'}
+    '''
     # 客户端用ajax请求时一般传过来的是json字符串，用get_json解析，返回的
     # 时候也要转成json字符串传回去
-    print('!!check json', json['todo_id'])
+    print('!!check json', json)
     result_id = Todo.toggleTodo(json)
-    print('!!OK check')
     return result_id
 
 #
