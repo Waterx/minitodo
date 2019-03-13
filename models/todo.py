@@ -52,7 +52,7 @@ class Todo(Document):
         print('model todo', 'delTodo', flag)
         if flag != 1:
             return 'wrong delete'
-        return flag
+        return json.dumps(flag)
 
 
     '''

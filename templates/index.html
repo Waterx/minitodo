@@ -14,10 +14,11 @@
 </head>
 
 <body>
-    <h2>TODO</h2>
     <main>
+        <h2>TODO</h2>
+
         <form action=/add method="post">
-            <input type="text" name="title">
+            <input type="text" name="title" class=pink-text>
             <!-- <button>Submit</button> -->
         </form>
 
@@ -29,11 +30,20 @@
                         <span class="todo_title">**TEST演示 This is a todo cell</span>
                     </label>
                 </span>
+
                 <span class="edit-btns right">
-                    <a class="right button delete-btn">
-                        <i class="material-icons small-icon left">clear</i>
+                    <a herf='' class="right button delete-btn" data-href="/item/4840/delete">
+                        <i class="material-icons small-icon left clearbtn">clear</i>
+                    </a>
+                    <a class="right button edit-btn">
+                        <i class="material-icons small-icon left editbtn">mode_edit</i>
                     </a>
                 </span>
+            </div>
+            <div class="todo_cell row item card-panel hoverable" data-id="4705">
+                <form action="/edit" method="POST">
+                    <input type="text" name="change_title" class="pink-text">
+                </form>
             </div>
         </div>
     </main>
@@ -83,9 +93,13 @@
                         <span class="todo_title">${todos[i].title}</span>
                     </label>
                     </span>
+
                     <span class="edit-btns right">
-                    <a class="right button delete-btn">
-                        <i class="material-icons small-icon left">clear</i>
+                    <a herf='' class="right button delete-btn" data-href="/item/4840/delete">
+                        <i class="material-icons small-icon left clearbtn">clear</i>
+                    </a>
+                    <a class="right button edit-btn">
+                        <i class="material-icons small-icon left editbtn">mode_edit</i>
                     </a>
                     </span>
                     </div>
@@ -110,8 +124,10 @@
         $('.todo_container').click(function (event) {
             target = event.target
             todo_id = target.parentElement.parentElement.parentElement.getAttribute('data-id')
+
+            // 当按到checkbox
             if (target.classList.contains('todo_title')) {
-                console.log('clicked', todo_id)
+                console.log('checkbox clicked', todo_id)
                 var data = {
                     'todo_id': todo_id,
                 }
@@ -121,9 +137,35 @@
                     console.log(check)
                 })
             }
-            else if (target.classList.contains('delete-btn')) {
-                console.log('ckickdel')
+
+            // 当按到删除按钮
+            else if (target.classList.contains('clearbtn')) {
+                console.log('ckick del', todo_id)
+                var data = {
+                    'todo_id': todo_id,
+                }
+                data = JSON.stringify(data)
+                ajax('POST', '/delete', null, data, function (r) {
+                    check = JSON.parse(r.response)
+                    console.log('delete', check)
+                    if (check === 1) {
+                        t = `[data-id='${todo_id}']`
+                        console.log(t)
+                        $(t).remove()
+                    }
+                })
             }
+
+            // 当按到编辑按钮
+            else if (target.classList.contains('editbtn')) {
+                console.log('edit')
+                t = `[data-id='${todo_id}']`
+                t = $(t)
+                console.log(t)
+
+            }
+
+
 
         })
 
