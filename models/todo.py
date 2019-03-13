@@ -76,6 +76,22 @@ class Todo(Document):
         result = json.dumps(t.todo_id)
         return result
 
+    @classmethod
+    def editTodo(cls, form):
+        tid = form['todo_id']
+        ttitle = form['title']
+        print('!!edit', tid, ttitle)
+        t = None
+        for todo in Todo.objects(todo_id=tid):
+            t = todo
+            break
+        print(t)
+        t.title = ttitle
+        t.save()
+        result = json.dumps(t.todo_id)
+        return result
+
+
     def todoDict(self):
         return {
             'title': self.title,

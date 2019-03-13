@@ -40,6 +40,7 @@
                     </a>
                 </span>
             </div>
+
             <div class="todo_cell row item card-panel hoverable" data-id="4705">
                 <form action="/edit" method="POST">
                     <input type="text" name="change_title" class="pink-text">
@@ -123,8 +124,7 @@
         // })
         $('.todo_container').click(function (event) {
             target = event.target
-            todo_id = target.parentElement.parentElement.parentElement.getAttribute('data-id')
-
+            todo_id = $(target).parents("div").attr('data-id');
             // 当按到checkbox
             if (target.classList.contains('todo_title')) {
                 console.log('checkbox clicked', todo_id)
@@ -158,10 +158,38 @@
 
             // 当按到编辑按钮
             else if (target.classList.contains('editbtn')) {
-                console.log('edit')
+                console.log('edit', todo_id)
                 t = `[data-id='${todo_id}']`
-                t = $(t)
+                // empty删除选中元素的子元素
+                t = $(t).empty()
                 console.log(t)
+                input = `
+                    <input type="text" name="change_title" class="pink-text">
+                `
+                t = $(t).append(input)
+                $(t).keyup(function (e) {
+                    var key = e.which;
+                    if (key == 13) {
+                        // title is a string type
+                        title = $(t).children("input").val()
+                        console.log('!!title', title)
+                        console.log('!!enter')
+                        var data = {
+                            'todo_id': todo_id,
+                            'title': title,
+                        }
+                        data = JSON.stringify(data)
+                        ajax('POST', '/edit', null, data, function (r) {
+                            eid = JSON.parse(r.response)
+                            console.log(eid)
+                            cell = title
+                            $(t).append(cell)
+                        })
+
+
+                    }
+                })
+
 
             }
 

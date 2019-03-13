@@ -71,6 +71,13 @@ def check():
     result_id = Todo.toggleTodo(json)
     return result_id
 
+@main.route("/edit", methods=['POST'])
+def edit():
+    json = request.get_json()
+    print('!!edit json', json)
+    result_id = Todo.editTodo(json)
+    return result_id
+
 #
 # @main.route("/register", methods=['POST'])
 # def register():
