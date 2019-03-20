@@ -11,11 +11,60 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .todo_cell {
+            margin: 10px;
+            /* background-color: lightblue; */
+        }
+
+        main {
+            max-width: 640px;
+            margin: auto;
+            padding: 40px 0 30px 0;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="progress hide">
+        <div class="indeterminate"></div>
+    </div>
     <main>
         <h2>TODO</h2>
+        <!-- <ul id="nav-mobile" class="sidenav sidenav-fixed" style="transform: translateX(0px);">
+            <li class="logo"><a id="logo-container" href="/" class="brand-logo">
+                    <object id="front-page-logo" type="image/svg+xml" data="res/materialize.svg">Your browser does not
+                        support SVG</object></a></li>
+            <li class="version"><a href="#" data-target="version-dropdown" class="dropdown-trigger">
+                    1.0.0
+                    <svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 10l5 5 5-5z"></path>
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg></a>
+                <ul id="version-dropdown" class="dropdown-content" tabindex="0">
+                    <li tabindex="0"><a>1.0.0</a></li>
+                    <li tabindex="0"><a href="http://archives.materializecss.com/0.100.2/">0.100.2</a></li>
+                </ul>
+
+            </li>
+            <li class="search">
+                <div class="search-wrapper">
+                    <input id="search" placeholder="Search"><i class="material-icons">search</i>
+                    <div class="search-results"></div>
+                </div>
+            </li>
+            <li class="bold"><a href="about.html" class="waves-effect waves-teal">About</a></li>
+            <li class="bold"><a href="getting-started.html" class="waves-effect waves-teal">Getting Started</a></li>
+
+            <li class="bold"><a href="mobile.html" class="waves-effect waves-teal">Mobile</a></li>
+            <li class="bold"><a href="showcase.html" class="waves-effect waves-teal">Showcase</a></li>
+            <li class="bold"><a href="themes.html" class="waves-effect waves-teal">Themes<span
+                        data-badge-caption="updated" class="new badge"></span></a></li>
+        </ul> -->
 
         <form action=/add method="post">
             <input type="text" name="title" class=pink-text>
@@ -76,7 +125,7 @@
             // 发送请求
             r.send(data)
         }
-        // 插入 todocell 的函数
+        // 刷新网页时遍历插入 todocell 的函数
         let inserTodos = function (todos) {
             for (let i in todos) {
                 console.log(i, ':', todos[i])
@@ -106,6 +155,7 @@
                     </div>
                     `
                 )
+
             }
         }
         let todos = undefined
@@ -123,6 +173,7 @@
         //     console.log('clicked')
         // })
         $('.todo_container').click(function (event) {
+            $('.progress').removeClass('hide')
             target = event.target
             todo_id = $(target).parents("div").attr('data-id');
             // 当按到checkbox
@@ -135,6 +186,8 @@
                 ajax('POST', '/check', null, data, function (r) {
                     check = JSON.parse(r.response)
                     console.log(check)
+                    $('.progress').addClass('hide')
+
                 })
             }
 
@@ -152,6 +205,8 @@
                         t = `[data-id='${todo_id}']`
                         console.log(t)
                         $(t).remove()
+                        $('.progress').addClass('hide')
+
                     }
                 })
             }
