@@ -125,6 +125,13 @@
             // 发送请求
             r.send(data)
         }
+        // 等待函数
+        function sleep(delay) {
+            var start = (new Date()).getTime();
+            while ((new Date()).getTime() - start < delay) {
+                continue;
+            }
+        }
         // 刷新网页时遍历插入 todocell 的函数
         let inserTodos = function (todos) {
             for (let i in todos) {
@@ -174,6 +181,7 @@
         // })
         $('.todo_container').click(function (event) {
             $('.progress').removeClass('hide')
+
             target = event.target
             todo_id = $(target).parents("div").attr('data-id');
             // 当按到checkbox
@@ -186,6 +194,7 @@
                 ajax('POST', '/check', null, data, function (r) {
                     check = JSON.parse(r.response)
                     console.log(check)
+                    // setTimeout($('.progress').addClass('hide'), 1000000)
                     $('.progress').addClass('hide')
 
                 })
@@ -226,7 +235,7 @@
                     var key = e.which;
                     if (key == 13) {
                         // title is a string type
-                        title = $(t).children("input").val()
+                        let title = $(t).children("input").val()
                         console.log('!!title', title)
                         console.log('!!enter')
                         var data = {
@@ -237,7 +246,25 @@
                         ajax('POST', '/edit', null, data, function (r) {
                             eid = JSON.parse(r.response)
                             console.log(eid)
-                            cell = title
+                            $(t).empty()
+                            cell = `
+                            <span>
+                            <label>
+                            <input class="checkbox" type="checkbox"/>
+                            <span class="todo_title">${title}</span>
+                            </label>
+                            </span>
+
+                            <span class="edit-btns right">
+                            <a herf='' class="right button delete-btn" data-href="/item/4840/delete">
+                                <i class="material-icons small-icon left clearbtn">clear</i>
+                            </a>
+                            <a class="right button edit-btn">
+                                <i class="material-icons small-icon left editbtn">mode_edit</i>
+                            </a>
+                            </span>
+                            
+                            `
                             $(t).append(cell)
                         })
 
