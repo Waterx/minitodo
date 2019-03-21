@@ -33,38 +33,32 @@
     <div class="progress hide">
         <div class="indeterminate"></div>
     </div>
-    <main>
-        <h2>TODO</h2>
-        <!-- <ul id="nav-mobile" class="sidenav sidenav-fixed" style="transform: translateX(0px);">
-            <li class="logo"><a id="logo-container" href="/" class="brand-logo">
-                    <object id="front-page-logo" type="image/svg+xml" data="res/materialize.svg">Your browser does not
-                        support SVG</object></a></li>
-            <li class="version"><a href="#" data-target="version-dropdown" class="dropdown-trigger">
-                    1.0.0
-                    <svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M7 10l5 5 5-5z"></path>
-                        <path d="M0 0h24v24H0z" fill="none"></path>
-                    </svg></a>
-                <ul id="version-dropdown" class="dropdown-content" tabindex="0">
-                    <li tabindex="0"><a>1.0.0</a></li>
-                    <li tabindex="0"><a href="http://archives.materializecss.com/0.100.2/">0.100.2</a></li>
-                </ul>
 
-            </li>
-            <li class="search">
-                <div class="search-wrapper">
-                    <input id="search" placeholder="Search"><i class="material-icons">search</i>
-                    <div class="search-results"></div>
+
+    <ul id="slide-out" class="sidenav">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <img src="images/office.jpg">
                 </div>
-            </li>
-            <li class="bold"><a href="about.html" class="waves-effect waves-teal">About</a></li>
-            <li class="bold"><a href="getting-started.html" class="waves-effect waves-teal">Getting Started</a></li>
+                <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
+                <a href="#name"><span class="white-text name">John Doe</span></a>
+                <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+            </div>
+        </li>
+        <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+        <li><a href="#!">Second Link</a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li><a class="subheader">Subheader</a></li>
+        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+    </ul>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 
-            <li class="bold"><a href="mobile.html" class="waves-effect waves-teal">Mobile</a></li>
-            <li class="bold"><a href="showcase.html" class="waves-effect waves-teal">Showcase</a></li>
-            <li class="bold"><a href="themes.html" class="waves-effect waves-teal">Themes<span
-                        data-badge-caption="updated" class="new badge"></span></a></li>
-        </ul> -->
+    <main>
+
+        <h2>TODO</h2>
 
         <form action=/add method="post">
             <input type="text" name="title" class=pink-text>
@@ -81,19 +75,13 @@
                 </span>
 
                 <span class="edit-btns right">
-                    <a herf='' class="right button delete-btn" data-href="/item/4840/delete">
+                    <a herf='' class="right button delete-btn">
                         <i class="material-icons small-icon left clearbtn">clear</i>
                     </a>
                     <a class="right button edit-btn">
                         <i class="material-icons small-icon left editbtn">mode_edit</i>
                     </a>
                 </span>
-            </div>
-
-            <div class="todo_cell row item card-panel hoverable" data-id="4705">
-                <form action="/edit" method="POST">
-                    <input type="text" name="change_title" class="pink-text">
-                </form>
             </div>
         </div>
     </main>
@@ -102,6 +90,11 @@
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script>
         // 自己的 ajax 轮子
+        M.AutoInit();
+
+        $(document).ready(function () {
+            $('.sidenav').sidenav();
+        });
         var ajax = function (method, path, headers, data, reseponseCallback) {
             var r = new XMLHttpRequest()
             // 设置请求方法和请求地址
@@ -152,7 +145,7 @@
                     </span>
 
                     <span class="edit-btns right">
-                    <a herf='' class="right button delete-btn" data-href="/item/4840/delete">
+                    <a herf='' class="right button delete-btn">
                         <i class="material-icons small-icon left clearbtn">clear</i>
                     </a>
                     <a class="right button edit-btn">
@@ -256,7 +249,7 @@
                             </span>
 
                             <span class="edit-btns right">
-                            <a herf='' class="right button delete-btn" data-href="/item/4840/delete">
+                            <a herf='' class="right button delete-btn">
                                 <i class="material-icons small-icon left clearbtn">clear</i>
                             </a>
                             <a class="right button edit-btn">
@@ -266,6 +259,8 @@
                             
                             `
                             $(t).append(cell)
+                            $('.progress').addClass('hide')
+
                         })
 
 
