@@ -29,7 +29,7 @@ main = Blueprint('index', __name__)
     注册
     登录
 
-用户登录后, 会写入 session, 并且定向到 /profile
+用户登录后, 会写入 session
 """
 
 

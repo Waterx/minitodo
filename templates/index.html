@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     <link rel="stylesheet" href="/static/css/style.css">
     <style>
@@ -38,7 +37,7 @@
         }
 
         .sidenav {
-            max-width: 200px;
+            max-width: 270px;
         }
     </style>
 </head>
@@ -49,52 +48,61 @@
     </div>
 
     <ul class="sidenav sidenav-fixed">
-        <li>hahaah</li>
-        <li>sdfsdfsd</li>
-        <li>sdfsdfsd</li>
-
-        <li>sdfsdfsd</li>
-        <li>sdfsdfsd</li>
-
-        <li>sdfsdfsd</li>
-        <li>sdfsdfsd</li>
-
-        <li>sdfsdfsd</li>
-        <li>sdfsdfsd</li>
-
-    </ul>
-    <!-- <ul id="slide-out" class="sidenav">
         <li>
             <div class="user-view">
                 <div class="background">
-                    <img src="images/office.jpg">
+                    <img src="static/images/moutain.jpg">
                 </div>
-                <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
+                <a href="#user"><img class="circle" src="static/images/cat.jpg"></a>
                 <a href="#name"><span class="white-text name">John Doe</span></a>
                 <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
             </div>
         </li>
-        <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-        <li><a href="#!">Second Link</a></li>
+        <li><a href="#!" class='waves-effect'><i class="material-icons">done_all</i>任务<span class="new badge red"
+                    data-badge-caption="todo">4</span></a></li>
+        <li><a href="#!" class='waves-effect'><i class="material-icons">folder</i>项目</a></li>
+        <li><a href="#!" class='waves-effect'><i class="material-icons">bookmark</i>标签</a></li>
+        <li><a href="#!" class='waves-effect'><i class="material-icons">receipt</i>便签</a></li>
+
+
         <li>
             <div class="divider"></div>
         </li>
         <li><a class="subheader">Subheader</a></li>
-        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+        <li><a class="subheader">Subheader</a></li>
+
+        <li><a class="subheader">Subheader</a></li>
+
+        <li><a class="subheader">Subheader</a></li>
+
+        <li class='margin-bottom'><a class="waves-effect" href="#!">Third Link With Waves</a></li>
     </ul>
-    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a> -->
+
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>Modal Header</h4>
+            <p>A bunch of text</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
+
+
 
     <main>
 
         <h2>TODO</h2>
+        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
 
-        <form action=/add method="post">
+
+        <form action=/add method="post" class="">
             <input type="text" name="title" class=pink-text>
             <!-- <button>Submit</button> -->
         </form>
 
         <div class="todo_container">
-            <div class="todo_cell row item card-panel hoverable" data-id="4705">
+            <!-- <div class="todo_cell row item card-panel hoverable" data-id="4705">
                 <span>
                     <label>
                         <input class="checkbox" type="checkbox" />
@@ -109,11 +117,14 @@
                     <a class="right button edit-btn">
                         <i class="material-icons small-icon left editbtn">mode_edit</i>
                     </a>
+                    <a class="right button reorder-btn">
+                        <i class="material-icons small-icon left reorderbtn">reorder</i>
+                    </a>
                 </span>
-            </div>
+            </div> -->
         </div>
         <div class="todo_container">
-            <div class="todo_cell row item card-panel hoverable" data-id="4705">
+            <!-- <div class="todo_cell row item card-panel hoverable" data-id="4705">
                 <span>
                     <label>
                         <input class="checkbox" type="checkbox" />
@@ -128,20 +139,29 @@
                     <a class="right button edit-btn">
                         <i class="material-icons small-icon left editbtn">mode_edit</i>
                     </a>
+                    <a class="right button reorder-btn">
+                        <i class="material-icons small-icon left reorderbtn">reorder</i>
+                    </a>
                 </span>
-            </div>
+            </div> -->
         </div>
     </main>
 
 
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-    <script>
-        // 自己的 ajax 轮子
-        M.AutoInit();
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
+    <script>
+        M.AutoInit();
         $(document).ready(function () {
             $('.sidenav').sidenav();
         });
+
+
+    </script>
+    <script>
+        // 自己的 ajax 轮子
+
         var ajax = function (method, path, headers, data, reseponseCallback) {
             var r = new XMLHttpRequest()
             // 设置请求方法和请求地址
@@ -192,16 +212,24 @@
                     </span>
 
                     <span class="edit-btns right">
-                    <a herf='' class="right button delete-btn">
+
+                    <a herf='#!' class="right delete-btn">
                         <i class="material-icons small-icon left clearbtn">clear</i>
                     </a>
-                    <a class="right button edit-btn">
+                    <a herf='#!' class="right edit-btn">
                         <i class="material-icons small-icon left editbtn">mode_edit</i>
                     </a>
+                    <a href='#modal1' class="right reorder-btn modal-trigger">
+                        <i class="material-icons small-icon left reorderbtn">reorder</i>
+                    </a>
+
                     </span>
+
                     </div>
                     `
+                    //<i class="material-icons small-icon left reorderbtn">reorder</i>
                 )
+
 
             }
         }
@@ -224,6 +252,7 @@
 
             target = event.target
             todo_id = $(target).parents("div").attr('data-id');
+
             // 当按到checkbox
             if (target.classList.contains('todo_title')) {
                 console.log('checkbox clicked', todo_id)
@@ -258,6 +287,10 @@
 
                     }
                 })
+            }
+
+            else if (target.classList.contains('editxbtn')) {
+
             }
 
             // 当按到编辑按钮
@@ -296,11 +329,14 @@
                             </span>
 
                             <span class="edit-btns right">
-                            <a herf='' class="right button delete-btn">
-                                <i class="material-icons small-icon left clearbtn">clear</i>
+                            <a herf='#!' class="right  delete-btn">
+                            <i class="material-icons small-icon left clearbtn">clear</i>
                             </a>
-                            <a class="right button edit-btn">
-                                <i class="material-icons small-icon left editbtn">mode_edit</i>
+                            <a herf='#!' class="right  edit-btn">
+                            <i class="material-icons small-icon left editbtn">mode_edit</i>
+                            </a>
+                            <a href='#modal1' class="right  reorder-btn modal-trigger">
+                            <i class="material-icons small-icon left reorderbtn">reorder</i>
                             </a>
                             </span>
                             
