@@ -78,6 +78,7 @@
         <li class='margin-bottom'><a class="waves-effect" href="#!">Third Link With Waves</a></li>
     </ul>
 
+    <!-- 弹出来的详细编辑页 -->
     <div id="modal1" class="modal">
         <div class="modal-content">
             <h4>Modal Header</h4>
@@ -96,10 +97,18 @@
         <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
 
 
-        <form action=/add method="post" class="">
-            <input type="text" name="title" class=pink-text>
-            <!-- <button>Submit</button> -->
-        </form>
+
+        <div class="row">
+            <form class="col s12" action=/add method="post">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input id="input_text" type="text" data-length="15" name='title' maxlength="15" class=pink-text>
+                        <label for="input_text">输入待办事项</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+
 
         <div class="todo_container">
             <!-- <div class="todo_cell row item card-panel hoverable" data-id="4705">
@@ -155,6 +164,8 @@
         M.AutoInit();
         $(document).ready(function () {
             $('.sidenav').sidenav();
+            $('input#input_text, textarea#textarea1').characterCounter();
+
         });
 
 
