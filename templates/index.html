@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>自在Todo</title>
+    <link rel="shortcut icon" href="/static/images/man.png">
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.min.css" rel="stylesheet">
@@ -68,6 +69,20 @@
         body {
             background-color: #FAFAFA;
         }
+
+        .modal-content .left {
+            margin-right: 20px;
+        }
+
+        .modal-rank {
+            border: 2px solid black;
+        }
+
+        .modal-deadline {
+            border-bottom: 2px dotted rgb(35, 130, 185);
+            height: 50px;
+            padding: 15px 5px;
+        }
     </style>
 </head>
 
@@ -121,12 +136,48 @@
             </div>
         </nav>
     </div>
+
     <!-- 弹出来的详细编辑页 -->
     <div id="modal1" class="modal">
         <div class="modal-content">
             <h4>Modal Header</h4>
-            <p>A bunch of text</p>
+
+            <div class="modal-deadline">
+                <form action="/reorder" method="POST">
+
+                    <label class="left">
+                        <input class="with-gap" name="group1" type="radio" checked />
+                        <span class="red-text text-darken-1">
+                            紧急3
+                        </span>
+                    </label>
+
+                    <label class="left">
+                        <input class="with-gap" name="group1" type="radio" />
+                        <span class="orange-text">
+                            重要2
+                        </span>
+                    </label>
+
+                    <label class="left">
+                        <input class="with-gap" name="group1" type="radio" />
+                        <span>
+                            不重要1
+                        </span>
+                    </label>
+
+
+
+                </form>
+            </div>
+            <div class="modal-deadline">
+                asdfasdfsd
+            </div>
+            <div class="modal-deadline">
+                asdfasdfsd
+            </div>
         </div>
+
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
         </div>
@@ -150,7 +201,7 @@
 
 
         <div class="todo_container" id='todo-container-1'>
-            <h4>紧急</h4>
+            <h4>紧急3</h4>
             <!-- <div class="todo_cell row item card-panel hoverable" data-id="4705">
                 <span>
                     <label>
@@ -173,11 +224,11 @@
             </div> -->
         </div>
         <div class="todo_container" id='todo-container-2'>
-            <h4>重要</h4>
+            <h4>重要2</h4>
 
         </div>
         <div class="todo_container" id='todo-container-3'>
-            <h4>不重要</h4>
+            <h4>不重要1</h4>
 
         </div>
     </main>
@@ -290,10 +341,8 @@
 
     </script>
     <script>
-        // 这个 script 的用途为改变 done 的状态， 然后传给服务器
-        // $('.todo_cell').click(function (event) {
-        //     console.log('clicked')
-        // })
+        // 这个 script 的用途为点到按钮后产生事件， 然后传给服务器， 再由返回数据改变view
+
         $('.todo_container').click(function (event) {
             $('.progress').removeClass('hide')
 
@@ -336,7 +385,12 @@
                 })
             }
 
-            else if (target.classList.contains('editxbtn')) {
+            // 当点到reorder按钮，
+            else if (target.classList.contains('reorderbtn')) {
+                console.log('reorder click!!!')
+                t = `[data-id='${todo_id}']`
+                title = $(t).find('.todo_title').text()
+                $('.modal-content h4').text(title)
 
             }
 

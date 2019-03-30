@@ -7,9 +7,21 @@ connect('minitodo')
 
 
 class Todo(Document):
+
+    __fields__ = [
+        'todo_id',
+        'title',
+        'done',
+        'dead_line',
+        'rank',
+    ]
+
     todo_id = StringField(required=True)
-    title = StringField(max_length=50)
+    title = StringField(max_length=30)
     done = BooleanField(default=False)
+    dead_line = StringField(max_length=30)
+    rank = StringField(max_length=1)
+
     # user_id = StringField(default='123')
 
     # @classmethod
@@ -23,11 +35,15 @@ class Todo(Document):
     def getAll(cls):
         list = Todo.objects()
         dict_all=[]
-
         for l in list:
-            td = {'todo_id': l.todo_id,
-                  'title': l.title,
-                  'done':l.done}
+            td = {}
+            for i in range(len(Todo.__fields__)):
+                print(getattr(l, Todo.__fields__[i]))
+                td[Todo.__fields__[i]] = l[Todo.__fields__[i]]
+            # td = {'todo_id': l.todo_id,
+            #       'title': l.title,
+            #       'done':l.done,
+            #       'dead_line':l.dead_line}
             dict_all.append(td)
         return json.dumps(dict_all)
 
@@ -148,4 +164,6 @@ class Todox():
 # for post in Todo.objects(done=False):
 #     print(post.title)
 
-Todo.delTodo({'todo_id': 'dd348eb4-43aa-11e9-8ca5-40e230d295fe'})
+# Todo.delTodo({'todo_id': 'dd348eb4-43aa-11e9-8ca5-40e230d295fe'})
+
+print(Todo.getAll())
