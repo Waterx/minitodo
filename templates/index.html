@@ -6,13 +6,21 @@
     <title>自在Todo</title>
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Compiled and minified JavaScript -->
+    <link href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.bootcss.com/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
+        rel="stylesheet"> -->
+
 
     <link rel="stylesheet" href="/static/css/style.css">
     <style>
+        /* nav {
+            margin-left: 271px;
+        } */
+
         .todo_cell {
             margin: 10px;
+            max-width: 85%;
+
             /* background-color: lightblue; */
         }
 
@@ -26,6 +34,23 @@
 
         .todo_container {
             display: inline-block;
+            max-width: 27%;
+            border-left-width: 2px;
+            border-left-style: solid;
+        }
+
+        #todo-container-1 {
+            border-left-color: tomato;
+
+        }
+
+        #todo-container-2 {
+            border-left-color: orange;
+        }
+
+        #todo-container-3 {
+            border-left-color: #42a5f5;
+
         }
 
         .hide {
@@ -39,13 +64,18 @@
         .sidenav {
             max-width: 270px;
         }
+
+        body {
+            background-color: #FAFAFA;
+        }
     </style>
 </head>
 
 <body>
-    <div class="progress hide jindutiao">
+
+    <!-- <div class="progress hide jindutiao">
         <div class="indeterminate"></div>
-    </div>
+    </div> -->
 
     <ul class="sidenav sidenav-fixed">
         <li>
@@ -78,6 +108,19 @@
         <li class='margin-bottom'><a class="waves-effect" href="#!">Third Link With Waves</a></li>
     </ul>
 
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Logo</a>
+                <ul class="right">
+                    <li><a href="sass.html"><i class="material-icons">search</i></a></li>
+                    <li><a href="badges.html"><i class="material-icons">view_module</i></a></li>
+                    <li><a href="collapsible.html"><i class="material-icons">refresh</i></a></li>
+                    <li><a href="mobile.html"><i class="material-icons">more_vert</i></a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
     <!-- 弹出来的详细编辑页 -->
     <div id="modal1" class="modal">
         <div class="modal-content">
@@ -92,11 +135,7 @@
 
 
     <main>
-
-        <h2>TODO</h2>
         <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
-
-
 
         <div class="row">
             <form class="col s12" action=/add method="post">
@@ -110,7 +149,8 @@
         </div>
 
 
-        <div class="todo_container">
+        <div class="todo_container" id='todo-container-1'>
+            <h4>紧急</h4>
             <!-- <div class="todo_cell row item card-panel hoverable" data-id="4705">
                 <span>
                     <label>
@@ -132,27 +172,13 @@
                 </span>
             </div> -->
         </div>
-        <div class="todo_container">
-            <!-- <div class="todo_cell row item card-panel hoverable" data-id="4705">
-                <span>
-                    <label>
-                        <input class="checkbox" type="checkbox" />
-                        <span class="todo_title">**TEST演示 This is a todo cell</span>
-                    </label>
-                </span>
+        <div class="todo_container" id='todo-container-2'>
+            <h4>重要</h4>
 
-                <span class="edit-btns right">
-                    <a class="right button delete-btn">
-                        <i class="material-icons small-icon left clearbtn">clear</i>
-                    </a>
-                    <a class="right button edit-btn">
-                        <i class="material-icons small-icon left editbtn">mode_edit</i>
-                    </a>
-                    <a class="right button reorder-btn">
-                        <i class="material-icons small-icon left reorderbtn">reorder</i>
-                    </a>
-                </span>
-            </div> -->
+        </div>
+        <div class="todo_container" id='todo-container-3'>
+            <h4>不重要</h4>
+
         </div>
     </main>
 
@@ -164,8 +190,18 @@
         M.AutoInit();
         $(document).ready(function () {
             $('.sidenav').sidenav();
-            $('input#input_text, textarea#textarea1').characterCounter();
-
+            $('input#input_text').characterCounter();
+            // $(".todo_cell").hover(function () {
+            //     $(".edit-btns").removeClass("hide");
+            // }, function () {
+            //     $(".edit-btns").addClass("hide");
+            // });
+            $(document).on('mouseenter', '.todo_cell', function () {
+                $(this).find('.edit-btns').removeClass('hide');
+            })
+                .on('mouseleave', '.todo_cell', function () {
+                    $(this).find('.edit-btns').addClass('hide');
+                });
         });
 
 
@@ -222,7 +258,7 @@
                     </label>
                     </span>
 
-                    <span class="edit-btns right">
+                    <span class="edit-btns right hide">
 
                     <a herf='#!' class="right delete-btn">
                         <i class="material-icons small-icon left clearbtn">clear</i>
