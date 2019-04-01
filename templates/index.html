@@ -123,8 +123,8 @@
                 <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
             </div>
         </li>
-        <li><a href="#!" class='waves-effect'><i class="material-icons">done_all</i>任务<span class="new badge red"
-                    data-badge-caption="todo">4</span></a></li>
+        <li><a href="#!" class='waves-effect'><i class="material-icons">done_all</i>任务<span
+                    class="new badge red todobadge" data-badge-caption="todo">0</span></a></li>
         <li><a href="#!" class='waves-effect'><i class="material-icons">folder</i>项目</a></li>
         <li><a href="#!" class='waves-effect'><i class="material-icons">bookmark</i>标签</a></li>
         <li><a href="#!" class='waves-effect'><i class="material-icons">receipt</i>便签</a></li>
@@ -226,6 +226,9 @@
     <main>
         <div class="btn_control">
             <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+            <a class="waves-effect waves-light btn red left" id="clear-btn">
+                <i class="material-icons left">clear_all</i>Clear
+            </a>
         </div>
 
         <div class="todo_container" id='todo-container-3'>
@@ -289,9 +292,12 @@
             // });
             $(document).on('mouseenter', '.todo_cell', function () {
                 $(this).find('.edit-btns').removeClass('hide');
+                $(this).find('.time').addClass('hide');
             })
                 .on('mouseleave', '.todo_cell', function () {
                     $(this).find('.edit-btns').addClass('hide');
+                    $(this).find('.time').removeClass('hide');
+
                 });
         });
 
@@ -332,16 +338,23 @@
         }
         // 刷新网页时遍历插入 todocell 的函数
         let inserTodos = function (todos) {
+            let undone = 0;
             for (let i in todos) {
                 console.log(i, ':', todos[i])
-                let checked = ''
+                let checked = '';
                 if (todos[i].done === true) {
-                    flag = true
-                    checked = 'checked='
+                    flag = true;
+                    checked = 'checked=';
+                }
+                else {
+                    undone = undone + 1;
                 }
                 let rank = todos[i].rank
                 let s = '#todo-container-' + rank
                 console.log(s)
+                if (todos[i].dead_line === null) {
+                    todos[i].dead_line = ''
+                }
                 $(s).append(
                     `
                     <div class="todo_cell row item card-panel hoverable" data-id="${todos[i].todo_id}">
@@ -352,8 +365,11 @@
                     </label>
                     </span>
 
-                    <span class="edit-btns right hide">
+                    <span class="time right pink-text">
+                        ${todos[i].dead_line}
+                    </span>
 
+                    <span class="edit-btns right hide">
                     <a herf='#!' class="right delete-btn">
                         <i class="material-icons small-icon left clearbtn">clear</i>
                     </a>
@@ -370,9 +386,11 @@
                     `
                     //<i class="material-icons small-icon left reorderbtn">reorder</i>
                 )
-
-
             }
+            console.log(undone)
+            $('.todobadge').text(undone)
+            console.log($('.todobadge').text())
+
         }
         let todos = undefined
         ajax('GET', '/all', null, '', function (r) {

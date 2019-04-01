@@ -7,7 +7,6 @@ connect('minitodo')
 
 
 class Todo(Document):
-
     __fields__ = [
         'todo_id',
         'title',
@@ -35,9 +34,9 @@ class Todo(Document):
 
     @classmethod
     def getAll(cls):
-        list = Todo.objects()
-        dict_all=[]
-        for l in list:
+        tlist = Todo.objects()
+        dict_all = []
+        for l in tlist:
             td = {}
             for i in range(len(Todo.__fields__)):
                 print(getattr(l, Todo.__fields__[i]))
@@ -55,11 +54,10 @@ class Todo(Document):
             title=form.get('title', ''),
             done=False,
             todo_id=str(uuid.uuid1()),
-            rank = form.get('rank', 3),
-            updated_time = int(time.time())
+            rank=form.get('rank', 3),
+            updated_time=int(time.time())
         )
         t.save()
-
 
     @classmethod
     def reorderTodo(cls, form):
@@ -76,13 +74,11 @@ class Todo(Document):
         t.save()
         return tid
 
-
-
-
     '''
         该函数作用是通过todo_id删除todo，返回todo_id的字符串
         注意，这里的form实际上是一个json串
     '''
+
     @classmethod
     def delTodo(cls, form):
         tid = form['todo_id']
@@ -93,16 +89,16 @@ class Todo(Document):
             return 'wrong delete'
         return json.dumps(flag)
 
-
     '''
         该函数作用是改变todo的done值，返回todo_id的字符串
         注意，这里的form实际上是一个json串
     '''
+
     @classmethod
     def toggleTodo(cls, form):
         t = None
         tid = form['todo_id']
-        print('model toggletodo', 'tid',tid)
+        print('model toggletodo', 'tid', tid)
         for todo in Todo.objects(todo_id=tid):
             t = todo
             break
@@ -130,13 +126,14 @@ class Todo(Document):
         result = json.dumps(t.todo_id)
         return result
 
-
     def todoDict(self):
         return {
             'title': self.title,
             'todo_id': self.todo_id,
             'done': self.done
         }
+
+
 class Todox():
     def __init__(self, form):
         title = form.title
@@ -188,4 +185,3 @@ class Todox():
 #     print(post.title)
 
 # Todo.delTodo({'todo_id': 'dd348eb4-43aa-11e9-8ca5-40e230d295fe'})
-
