@@ -11,7 +11,7 @@
     <!-- <link href="https://cdn.bootcss.com/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
         rel="stylesheet"> -->
 
-
+    <link rel="stylesheet" href="/static/css/jquery.datetimepicker.css">
     <link rel="stylesheet" href="/static/css/style.css">
     <style>
         /* nav {
@@ -35,22 +35,27 @@
 
         .todo_container {
             display: inline-block;
-            max-width: 27%;
+            vertical-align: top;
+
+            max-width: 40%;
+            width: 30%;
             border-left-width: 2px;
             border-left-style: solid;
         }
 
-        #todo-container-1 {
+        #todo-container-3 {
             border-left-color: tomato;
-
+            background-color: #FFEDE7;
         }
 
         #todo-container-2 {
             border-left-color: orange;
+            background-color: #FFEFCB;
         }
 
-        #todo-container-3 {
+        #todo-container-1 {
             border-left-color: #42a5f5;
+            background-color: #D6F4FE;
 
         }
 
@@ -70,18 +75,33 @@
             background-color: #FAFAFA;
         }
 
+        .modal h4 {
+            border-bottom: 1px solid #E8E8E8;
+
+        }
+
         .modal-content .left {
             margin-right: 20px;
         }
 
-        .modal-rank {
-            border: 2px solid black;
+        .modal-box {
+            border-bottom: 1px solid #9e9e9e;
+            height: 50px;
+            padding: 10px 5px;
+            position: relative;
+            max-width: 70%;
         }
 
-        .modal-deadline {
-            border-bottom: 2px dotted rgb(35, 130, 185);
-            height: 50px;
-            padding: 15px 5px;
+        .modal-box input {
+            position: absolute;
+            top: 4px;
+            left: 46px;
+        }
+
+        .btn_control {
+            border: 1px dotted darkcyan;
+            margin-bottom: 8px;
+            max-width: 1070px;
         }
     </style>
 </head>
@@ -141,94 +161,113 @@
     <div id="modal1" class="modal">
         <div class="modal-content">
             <h4>Modal Header</h4>
+            <form action="/reorder" method="post" autocomplete="off">
 
-            <div class="modal-deadline">
-                <form action="/reorder" method="POST">
+                <div class="modal-box">
+                    <i class="small material-icons">alarm</i>
+                    <input type="text" id="datetimepicker" name='dead_line' />
+                    <input type="hidden" id='hideinput' name='todo_id' value="" />
 
+                </div>
+
+                <div class="modal-box">
+                    <i class="small material-icons left">grade</i>
                     <label class="left">
-                        <input class="with-gap" name="group1" type="radio" checked />
+                        <input class="with-gap" name="rank" value=3 type="radio" checked />
                         <span class="red-text text-darken-1">
                             紧急3
                         </span>
                     </label>
 
                     <label class="left">
-                        <input class="with-gap" name="group1" type="radio" />
+                        <input class="with-gap" name="rank" value=2 type="radio" />
                         <span class="orange-text">
                             重要2
                         </span>
                     </label>
 
                     <label class="left">
-                        <input class="with-gap" name="group1" type="radio" />
+                        <input class="with-gap" name="rank" value=1 type="radio" />
                         <span>
                             不重要1
                         </span>
                     </label>
+                </div>
+                <div class="modal-box">
+                    <i class="small material-icons">turned_in_not</i>
+                    asaaaaaaaaaa
+                </div>
+                <div class="modal-box">
+                    <i class="small material-icons">folder_open</i>
+                    asaaaaaaaaaa
+                </div>
+                <div class="modal-box">
+                    <i class="small material-icons">folder_open</i>
+                    asaaaaaaaaaa
+                </div>
+                <div class="modal-box">
+                    <i class="small material-icons">folder_open</i>
+                    asaaaaaaaaaa
+                </div>
+                <input type="submit" value="保存">
+            </form>
 
-
-
-                </form>
-            </div>
-            <div class="modal-deadline">
-                asdfasdfsd
-            </div>
-            <div class="modal-deadline">
-                asdfasdfsd
-            </div>
         </div>
 
         <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+            <!-- <a href="#!" class="modal-close waves-effect waves-green btn-flat">
+                保存</a> -->
+            <!-- <input type="submit" value="保存"> -->
         </div>
     </div>
 
 
 
     <main>
-        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+        <div class="btn_control">
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+        </div>
 
-        <div class="row">
-            <form class="col s12" action=/add method="post">
+        <div class="todo_container" id='todo-container-3'>
+            <h4>紧急3</h4>
+            <form class="" action="/add" method="post" autocomplete="off">
                 <div class="row">
-                    <div class="input-field col s6">
-                        <input id="input_text" type="text" data-length="15" name='title' maxlength="15" class=pink-text>
-                        <label for="input_text">输入待办事项</label>
+                    <div class="input-field col s12">
+                        <input id="input_text" type="text" data-length="15" name="title" maxlength="15"
+                            class="pink-text invalid">
+                        <input type="hidden" name='rank' value=3>
+                        <label for="input_text" class="">输入待办事项</label>
                     </div>
                 </div>
             </form>
-        </div>
 
-
-        <div class="todo_container" id='todo-container-1'>
-            <h4>紧急3</h4>
-            <!-- <div class="todo_cell row item card-panel hoverable" data-id="4705">
-                <span>
-                    <label>
-                        <input class="checkbox" type="checkbox" />
-                        <span class="todo_title">**TEST演示 This is a todo cell</span>
-                    </label>
-                </span>
-
-                <span class="edit-btns right">
-                    <a class="right button delete-btn">
-                        <i class="material-icons small-icon left clearbtn">clear</i>
-                    </a>
-                    <a class="right button edit-btn">
-                        <i class="material-icons small-icon left editbtn">mode_edit</i>
-                    </a>
-                    <a class="right button reorder-btn">
-                        <i class="material-icons small-icon left reorderbtn">reorder</i>
-                    </a>
-                </span>
-            </div> -->
         </div>
         <div class="todo_container" id='todo-container-2'>
             <h4>重要2</h4>
+            <form class="" action="/add" method="post" autocomplete="off">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="input_text" type="text" data-length="15" name="title" maxlength="15"
+                            class="pink-text invalid">
+                        <input type="hidden" name='rank' value=2>
+                        <label for="input_text" class="">输入待办事项</label>
+                    </div>
+                </div>
+            </form>
 
         </div>
-        <div class="todo_container" id='todo-container-3'>
+        <div class="todo_container" id='todo-container-1'>
             <h4>不重要1</h4>
+            <form class="" action="/add" method="post" autocomplete="off">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="input_text" type="text" data-length="15" name="title" maxlength="15"
+                            class="pink-text invalid">
+                        <input type="hidden" name='rank' value=1>
+                        <label for="input_text" class="">输入待办事项</label>
+                    </div>
+                </div>
+            </form>
 
         </div>
     </main>
@@ -236,12 +275,13 @@
 
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
+    <script src="/static/js/jquery.datetimepicker.js"></script>
     <script>
         M.AutoInit();
         $(document).ready(function () {
             $('.sidenav').sidenav();
             $('input#input_text').characterCounter();
+            $('#datetimepicker').datetimepicker({ step: 10 });
             // $(".todo_cell").hover(function () {
             //     $(".edit-btns").removeClass("hide");
             // }, function () {
@@ -299,7 +339,10 @@
                     flag = true
                     checked = 'checked='
                 }
-                $('.todo_container').append(
+                let rank = todos[i].rank
+                let s = '#todo-container-' + rank
+                console.log(s)
+                $(s).append(
                     `
                     <div class="todo_cell row item card-panel hoverable" data-id="${todos[i].todo_id}">
                     <span>
@@ -391,7 +434,7 @@
                 t = `[data-id='${todo_id}']`
                 title = $(t).find('.todo_title').text()
                 $('.modal-content h4').text(title)
-
+                $('.modal-content #hideinput').val(todo_id)
             }
 
             // 当按到编辑按钮

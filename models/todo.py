@@ -14,6 +14,7 @@ class Todo(Document):
         'done',
         'dead_line',
         'rank',
+        'updated_time'
     ]
 
     todo_id = StringField(required=True)
@@ -21,6 +22,7 @@ class Todo(Document):
     done = BooleanField(default=False)
     dead_line = StringField(max_length=30)
     rank = StringField(max_length=1)
+    updated_time = IntField()
 
     # user_id = StringField(default='123')
 
@@ -52,9 +54,30 @@ class Todo(Document):
         t = Todo(
             title=form.get('title', ''),
             done=False,
-            todo_id=str(uuid.uuid1())
+            todo_id=str(uuid.uuid1()),
+            rank = form.get('rank', 3),
+            updated_time = int(time.time())
         )
         t.save()
+
+
+    @classmethod
+    def reorderTodo(cls, form):
+        tid = form.get('todo_id', '')
+        print('!!model reorder!!', tid)
+        t = None
+        for todo in Todo.objects(todo_id=tid):
+            t = todo
+            break
+        t.dead_line = form.get('dead_line', '')
+        print(t.dead_line)
+        t.rank = form.get('rank', 3)
+        print(t.rank)
+        t.save()
+        return tid
+
+
+
 
     '''
         该函数作用是通过todo_id删除todo，返回todo_id的字符串
@@ -166,4 +189,3 @@ class Todox():
 
 # Todo.delTodo({'todo_id': 'dd348eb4-43aa-11e9-8ca5-40e230d295fe'})
 
-print(Todo.getAll())
