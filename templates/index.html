@@ -408,7 +408,12 @@
             $('.progress').removeClass('hide')
 
             target = event.target
+            // target 选中的是todo_cell下面的东西
             todo_id = $(target).parents("div").attr('data-id');
+
+            let dead_line = $(target).parents("div .todo_cell").find('.time').text();
+            dead_line = dead_line.trim();
+            console.log('!!dead line1', dead_line)
 
             // 当按到checkbox
             if (target.classList.contains('todo_title')) {
@@ -470,7 +475,8 @@
                     var key = e.which;
                     if (key == 13) {
                         // title is a string type
-                        let title = $(t).children("input").val()
+                        let title = $(t).children("input").val();
+
                         console.log('!!title', title)
                         console.log('!!enter')
                         var data = {
@@ -482,12 +488,17 @@
                             eid = JSON.parse(r.response)
                             console.log(eid)
                             $(t).empty()
+                            console.log('!!dead line2', dead_line)
                             cell = `
                             <span>
                             <label>
                             <input class="checkbox" type="checkbox"/>
                             <span class="todo_title">${title}</span>
                             </label>
+                            </span>
+
+                            <span class="time right pink-text">
+                            ${dead_line}
                             </span>
 
                             <span class="edit-btns right">
