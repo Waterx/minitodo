@@ -5,6 +5,7 @@ config.py
 *.py[cod]
 *$py.class
 static/images
+.vscode
 # C extensions
 *.so
 
