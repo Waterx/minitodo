@@ -2,11 +2,10 @@ import time
 from mongoengine import *
 import uuid
 import json
+from models import Model
 
-connect('minitodo')
+class Todo(Document, Model):
 
-
-class Todo(Document):
     __fields__ = [
         'todo_id',
         'title',
@@ -14,6 +13,7 @@ class Todo(Document):
         'dead_line',
         'rank',
         'updated_time'
+        'user'
     ]
 
     todo_id = StringField(required=True)
@@ -33,22 +33,6 @@ class Todo(Document):
     #     return m
 
     @classmethod
-    def getAll(cls):
-        tlist = Todo.objects()
-        dict_all = []
-        for l in tlist:
-            td = {}
-            for i in range(len(Todo.__fields__)):
-                print(getattr(l, Todo.__fields__[i]))
-                td[Todo.__fields__[i]] = l[Todo.__fields__[i]]
-            # td = {'todo_id': l.todo_id,
-            #       'title': l.title,
-            #       'done':l.done,
-            #       'dead_line':l.dead_line}
-            dict_all.append(td)
-        return json.dumps(dict_all)
-
-    @classmethod
     def inserTodo(cls, form):
         t = Todo(
             title=form.get('title', ''),
@@ -63,10 +47,7 @@ class Todo(Document):
     def reorderTodo(cls, form):
         tid = form.get('todo_id', '')
         print('!!model reorder!!', tid)
-        t = None
-        for todo in Todo.objects(todo_id=tid):
-            t = todo
-            break
+        t = Todo.get_one_by(todo_id=tid)
         t.dead_line = form.get('dead_line', '')
         print(t.dead_line)
         t.rank = form.get('rank', 3)
@@ -99,13 +80,8 @@ class Todo(Document):
         t = None
         tid = form['todo_id']
         print('model toggletodo', 'tid', tid)
-        for todo in Todo.objects(todo_id=tid):
-            t = todo
-            break
-        if t is None:
-            return 'wrong id'
+        t = Todo.get_one_by(todo_id=tid)
         td = t.done
-
         t.done = not td
         t.save()
         result = json.dumps(t.todo_id)
@@ -114,14 +90,10 @@ class Todo(Document):
     @classmethod
     def editTodo(cls, form):
         tid = form['todo_id']
-        ttitle = form['title']
-        print('!!edit', tid, ttitle)
-        t = None
-        for todo in Todo.objects(todo_id=tid):
-            t = todo
-            break
-        print(t)
-        t.title = ttitle
+        t_title = form['title']
+        print('!!edit', tid, t_title)
+        t = Todo.get_one_by(todo_id=tid)
+        t.title = t_title
         t.save()
         result = json.dumps(t.todo_id)
         return result
