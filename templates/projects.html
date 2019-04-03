@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>自在Todo</title>
+    <link rel="shortcut icon" href="/static/images/man.png">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.bootcss.com/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
+        rel="stylesheet"> -->
+
+    <link rel="stylesheet" href="/static/css/jquery.datetimepicker.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        /* nav {
+            margin-left: 271px;
+        } */
+
+        .todo_cell {
+            margin: 10px;
+            max-width: 85%;
+
+            /* background-color: lightblue; */
+        }
+
+        main {
+            max-width: 85%;
+            margin: auto;
+            position: relative;
+            left: 200px;
+            padding: 40px 0 30px 0;
+        }
+
+        .todo_container {
+            display: inline-block;
+            vertical-align: top;
+
+            max-width: 40%;
+            width: 30%;
+            border-left-width: 2px;
+            border-left-style: solid;
+        }
+
+        #todo-container-3 {
+            border-left-color: tomato;
+            background-color: #FFEDE7;
+        }
+
+        #todo-container-2 {
+            border-left-color: orange;
+            background-color: #FFEFCB;
+        }
+
+        #todo-container-1 {
+            border-left-color: #42a5f5;
+            background-color: #D6F4FE;
+
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .progress {
+            position: fixed;
+        }
+
+        .sidenav {
+            max-width: 270px;
+        }
+
+        body {
+            background-color: #FAFAFA;
+        }
+
+        .modal h4 {
+            border-bottom: 1px solid #E8E8E8;
+
+        }
+
+        .modal-content .left {
+            margin-right: 20px;
+        }
+
+        .modal-box {
+            border-bottom: 1px solid #9e9e9e;
+            height: 50px;
+            padding: 10px 5px;
+            position: relative;
+            max-width: 70%;
+        }
+
+        .modal-box input {
+            position: absolute;
+            top: 4px;
+            left: 50px;
+        }
+
+        .btn_control {
+            border: 1px dotted darkcyan;
+            margin-bottom: 8px;
+            max-width: 1070px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- <div class="progress hide jindutiao">
+        <div class="indeterminate"></div>
+    </div> -->
+
+    <!-- 左侧边栏 -->
+    <ul class="sidenav sidenav-fixed">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <img src="/static/images/moutain.jpg">
+                </div>
+                <a href="#user"><img class="circle" src="/static/images/cat.jpg"></a>
+                <a href="#name"><span class="white-text name">John Doe</span></a>
+                <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+            </div>
+        </li>
+        <li><a href="/" class='waves-effect'><i class="material-icons">done_all</i>任务<span
+                    class="new badge red todobadge" data-badge-caption="todo">0</span></a></li>
+        <li><a href="/projects" class='waves-effect'><i class="material-icons">folder</i>项目</a></li>
+        <li><a href="/tages" class='waves-effect'><i class="material-icons">bookmark</i>标签</a></li>
+        <li><a href="/notes" class='waves-effect'><i class="material-icons">receipt</i>便签</a></li>
+
+
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li><a class="subheader">Subheader</a></li>
+        <li><a class="subheader">Subheader</a></li>
+
+        <li><a class="subheader">Subheader</a></li>
+
+        <li><a class="subheader">Subheader</a></li>
+
+        <li class='margin-bottom'><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+    </ul>
+
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Logo</a>
+                <ul class="right">
+                    <li><a href="sass.html"><i class="material-icons">search</i></a></li>
+                    <li><a href="badges.html"><i class="material-icons">view_module</i></a></li>
+                    <li><a href="collapsible.html"><i class="material-icons">refresh</i></a></li>
+                    <li><a href="mobile.html"><i class="material-icons">more_vert</i></a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!-- 弹出来的详细编辑页 -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>新建项目</h4>
+            <form action={{ url_for("projects.add") }} method="post" autocomplete="off">
+
+                <div class="modal-box">
+                    项目名称：
+                    <input type="text" id="id-modal-title" name='title' />
+                    <!-- <input type="hidden" id='hideinput' name='project_id' value="" /> -->
+                </div>
+
+                <div class="modal-box">
+                    项目简介：
+                    <input type="text" name='intro'>
+                </div>
+
+                <input type="submit" value="提交">
+
+        </div>
+
+        <div class="modal-footer">
+            <!-- <a href="#!" class=" waves-effect waves-green btn-flat">
+            </a> -->
+            <input type="submit" class='modal-close btn' value="保存">
+            </form>
+
+        </div>
+    </div>
+
+
+    <main>
+        <div class="btn_control">
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+            <a class="waves-effect waves-light btn red left" id="clear-btn">
+                <i class="material-icons left">clear_all</i>Clear
+            </a>
+
+        </div>
+
+        <div class="projects_container">
+
+        </div>
+
+
+
+    </main>
+
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        M.AutoInit();
+        $(document).ready(function () {
+            $('.sidenav').sidenav();
+            $('input#input_text').characterCounter();
+            $(document).on('mouseenter', '.todo_cell', function () {
+                $(this).find('.edit-btns').removeClass('hide');
+                $(this).find('.time').addClass('hide');
+            })
+                .on('mouseleave', '.todo_cell', function () {
+                    $(this).find('.edit-btns').addClass('hide');
+                    $(this).find('.time').removeClass('hide');
+
+                });
+        });
+
+
+        $('form').submit(function (event) {
+            event.preventDefault();
+            var form = $(this);
+            //普通表单
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function (r) {
+                    r = JSON.parse(r)
+                    $('.projects_container').append(
+                        '<h1>', r.title, r.intro, '</h1>')
+                }
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                //错误信息
+            });
+
+
+        });
+
+
+    </script>
+</body>
+
+</html>

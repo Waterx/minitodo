@@ -20,12 +20,12 @@ app.secret_key = config.secret_key
 # 注册蓝图
 # 有一个 url_prefix 可以用来给蓝图中的每个路由加一个前缀
 from routes.index import main as index_routes
-# from routes.todo import main as todo_routes
+from routes.projects import main as projects_routes
 # from routes.reply import main as reply_routes
 # from routes.board import main as board_routes
 # from routes.mail import main as mail_routes
 app.register_blueprint(index_routes)
-# app.register_blueprint(todo_routes, url_prefix='/todo')
+app.register_blueprint(projects_routes, url_prefix='/projects')
 # app.register_blueprint(reply_routes, url_prefix='/reply')
 # app.register_blueprint(board_routes, url_prefix='/board')
 # app.register_blueprint(mail_routes, url_prefix='/mail')

@@ -6,6 +6,7 @@ config.py
 *$py.class
 static/images
 .vscode
+models/test.py
 # C extensions
 *.so
 

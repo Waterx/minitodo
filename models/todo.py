@@ -12,16 +12,17 @@ class Todo(Document, Model):
         'done',
         'dead_line',
         'rank',
-        'updated_time'
-        'user'
+        'updated_time',
+        # 'user'
     ]
 
     todo_id = StringField(required=True)
-    title = StringField(max_length=30)
+    title = StringField(max_length=20)
     done = BooleanField(default=False)
     dead_line = StringField(max_length=30)
     rank = StringField(max_length=1)
     updated_time = IntField()
+    # user = ReferenceField()
 
     # user_id = StringField(default='123')
 
