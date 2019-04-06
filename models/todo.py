@@ -3,9 +3,12 @@ from mongoengine import *
 import uuid
 import json
 from models import Model
-
+from models.project import Project
 class Todo(Document, Model):
 
+    '''
+    凡是写在fields里面的都是可以公开访问的
+    '''
     __fields__ = [
         'todo_id',
         'title',
@@ -13,7 +16,9 @@ class Todo(Document, Model):
         'dead_line',
         'rank',
         'updated_time',
+        'project'
         # 'user'
+
     ]
 
     todo_id = StringField(required=True)
@@ -22,6 +27,7 @@ class Todo(Document, Model):
     dead_line = StringField(max_length=30)
     rank = StringField(max_length=1)
     updated_time = IntField()
+    project = ReferenceField(Project)
     # user = ReferenceField()
 
     # user_id = StringField(default='123')
@@ -47,12 +53,15 @@ class Todo(Document, Model):
     @classmethod
     def reorderTodo(cls, form):
         tid = form.get('todo_id', '')
-        print('!!model reorder!!', tid)
+        print('!!model reorder', tid)
         t = Todo.get_one_by(todo_id=tid)
         t.dead_line = form.get('dead_line', '')
-        print(t.dead_line)
+        print('!!model reorder', t.dead_line)
         t.rank = form.get('rank', 3)
-        print(t.rank)
+        print('!!model reorder', t.rank)
+        pid = form.get('project')
+        # t.project = Project.get_one_by(project_id=pid)
+        print('!!model reorder pid', pid)
         t.save()
         return tid
 

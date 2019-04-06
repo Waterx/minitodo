@@ -98,6 +98,12 @@
             left: 46px;
         }
 
+        .modal-project {
+            position: absolute;
+            top: -15px;
+            left: 15px;
+        }
+
         .btn_control {
             border: 1px dotted darkcyan;
             margin-bottom: 8px;
@@ -195,6 +201,14 @@
                     </label>
                 </div>
                 <div class="modal-box">
+                    <i class="small material-icons">folder_open</i>
+                    <div class="input-field modal-project">
+                        <select class="project_select" name="project">
+                            <option value="" disabled selected>选择项目</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-box">
                     <i class="small material-icons">turned_in_not</i>
                     asaaaaaaaaaa
                 </div>
@@ -202,14 +216,7 @@
                     <i class="small material-icons">folder_open</i>
                     asaaaaaaaaaa
                 </div>
-                <div class="modal-box">
-                    <i class="small material-icons">folder_open</i>
-                    asaaaaaaaaaa
-                </div>
-                <div class="modal-box">
-                    <i class="small material-icons">folder_open</i>
-                    asaaaaaaaaaa
-                </div>
+
                 <input type="submit" value="保存">
             </form>
 
@@ -285,6 +292,7 @@
             $('.sidenav').sidenav();
             $('input#input_text').characterCounter();
             $('#datetimepicker').datetimepicker({ step: 10 });
+
             // $(".todo_cell").hover(function () {
             //     $(".edit-btns").removeClass("hide");
             // }, function () {
@@ -392,13 +400,39 @@
             console.log($('.todobadge').text())
 
         }
-        let todos = undefined
+        // let todos = undefined 应该没什么用
         ajax('GET', '/all', null, '', function (r) {
             todos = JSON.parse(r.response)
             console.log(typeof (todos))
             inserTodos(todos)
             //console.log(r.status, r.response)
         })
+
+        let inserProjectOption = function (projects) {
+            for (let i in projects) {
+                console.log('插入li')
+
+                $('.project_select').append(
+                    `
+                    <option value="${projects[i].project_id}">${projects[i].title}</option>
+                    `
+                )
+            }
+        }
+        $.ajax({
+            type: 'GET',
+            url: '/projects/all',
+            success: function (r) {
+                r = JSON.parse(r)
+                console.log(r)
+                inserProjectOption(r)
+                $('select').formSelect();
+
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            //错误信息
+            console.log("AJAX FAIL")
+        });
 
     </script>
     <script>

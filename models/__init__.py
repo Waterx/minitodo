@@ -7,8 +7,6 @@ connect('minitodo')
 
 
 class Model():
-
-
     meta = {'allow_inheritance': True}
 
     '''得到这张表的所有项的所有属性'''
@@ -19,14 +17,24 @@ class Model():
         dict_all = []
         for l in t_list:
             td = {}
+            # len(cls.__fields__)有多少个属性项
             for i in range(len(cls.__fields__)):
                 # print('model getall', getattr(l, cls.__fields__[i]))
-                td[cls.__fields__[i]] = l[cls.__fields__[i]]
+                # 如果这个属性是一个类，判断
+                flag = isinstance(l[cls.__fields__[i]], Model)
+                if flag is False:
+                    td[cls.__fields__[i]] = l[cls.__fields__[i]]
+                elif flag is True:
+                    if cls.__fields__[i] == 'project':
+                        td[cls.__fields__[i]] = l[cls.__fields__[i]].project_id
+
             # td = {'todo_id': l.todo_id,
             #       'title': l.title,
             #       'done':l.done,
             #       'dead_line':l.dead_line}
             dict_all.append(td)
+        print("!!Model dict_all", dict_all)
+
         return json.dumps(dict_all)
 
     @classmethod

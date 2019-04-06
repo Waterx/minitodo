@@ -17,6 +17,11 @@ main = Blueprint('projects', __name__)
 def index():
     return render_template("projects.html")
 
+@main.route("/all")
+def all():
+    list = Project.getAll()
+    return (list)
+
 @main.route("/add", methods=['POST'])
 def add():
     form = request.form

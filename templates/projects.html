@@ -103,6 +103,19 @@
             margin-bottom: 8px;
             max-width: 1070px;
         }
+
+        .project_box {
+            display: inline-block;
+            width: 250px;
+            height: 200px;
+            margin: 1em;
+            vertical-align: top;
+
+        }
+
+        .project_box_ear {
+            background: url(/static/images/project-box-ear.png) no-repeat 18px 0;
+        }
     </style>
 </head>
 
@@ -199,7 +212,27 @@
         </div>
 
         <div class="projects_container">
-
+            <div class="project_box card blue-grey lighten-3">
+                <div class="card-content white-text">
+                    <span class="card-title">Card Title</span>
+                    <p>西塞山前白鹭飞，桃花流水鳜鱼肥顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶</p>
+                </div>
+            </div>
+        </div>
+        <div class="project_box">
+        </div>
+        <div class="project_box">
+        </div>
+        <div class="project_box">
+        </div>
+        <div class="project_box">
+        </div>
+        <div class="project_box">
+        </div>
+        <div class="project_box">
+        </div>
+        <div class="project_box">
+        </div>
         </div>
 
 
@@ -225,25 +258,45 @@
                 });
         });
 
+        let inserProjects = function (projects) {
+            let undone = 0;
+            for (let i in projects) {
+                console.log(i, ':', projects[i])
 
-        $('form').submit(function (event) {
-            event.preventDefault();
-            var form = $(this);
-            //普通表单
-            $.ajax({
-                type: form.attr('method'),
-                url: form.attr('action'),
-                data: form.serialize(),
-                success: function (r) {
-                    r = JSON.parse(r)
-                    $('.projects_container').append(
-                        '<h1>', r.title, r.intro, '</h1>')
-                }
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                //错误信息
-            });
+                $('.projects_container').append(
+                    `
+                    <div class="project_box card blue-grey lighten-3">
+                        <div class="card-content white-text">
+                        <span class="card-title">${projects[i].title}</span>
+                        <p>${projects[i].intro}</p>
+                        </div>
+                    </div>
+                    `
+                    //<i class="material-icons small-icon left reorderbtn">reorder</i>
+                )
+            }
+        }
+
+        // let todos = undefined
+        // ajax('GET', '/all', null, '', function (r) {
+        //     todos = JSON.parse(r.response)
+        //     console.log(typeof (todos))
+        //     inserTodos(todos)
+        //     //console.log(r.status, r.response)
+        // })
 
 
+        //普通表单
+        $.ajax({
+            type: 'GET',
+            url: './all',
+            success: function (r) {
+                r = JSON.parse(r)
+                inserProjects(r)
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            //错误信息
+            console.log("AJAX FAIL")
         });
 
 

@@ -48,8 +48,8 @@ def add():
 @main.route("/all")
 def all():
     import json
-    list = Todo.getAll()
-    return (list)
+    t_list = Todo.getAll()
+    return (t_list)
 
 @main.route("/delete", methods=['POST'])
 def delete():
