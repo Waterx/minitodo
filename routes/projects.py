@@ -29,3 +29,12 @@ def add():
     # ImmutableMultiDict([('title', '的撒发射点法大师傅大师傅')])
     t = Project.inserProject(form)
     return t
+
+@main.route("/delete", methods=['POST'])
+def delete():
+    json = request.get_json()
+    print('!!!!!!!!!',json)
+    print('!!project delete json', json['project_id'])
+    result_status = Project.delProject(json)
+    print(result_status)
+    return result_status

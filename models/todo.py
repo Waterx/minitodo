@@ -60,7 +60,7 @@ class Todo(Document, Model):
         t.rank = form.get('rank', 3)
         print('!!model reorder', t.rank)
         pid = form.get('project')
-        # t.project = Project.get_one_by(project_id=pid)
+        t.project = Project.get_one_by(project_id=pid)
         print('!!model reorder pid', pid)
         t.save()
         return tid

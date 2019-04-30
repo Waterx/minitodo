@@ -15,16 +15,113 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <style>
         .project_box {
+            /* border: 1px darkblue solid; */
+            width: 190px;
+            height: 145px;
+            background-image: url(/static/images/folder.png);
+            background-size: 241px 250px;
+            background-position: -28px -51px;
             display: inline-block;
-            width: 200px;
-            height: 200px;
-            margin: 1em;
             vertical-align: top;
-
+            position: relative;
         }
 
-        .project_box_ear {
-            background: url(/static/images/project-box-ear.png) no-repeat 18px 0;
+        .task-title {
+            font-size: 16px;
+            line-height: 27px;
+            height: 80px;
+            overflow: hidden;
+            padding: 25px 18px 0;
+            word-break: break-all;
+        }
+
+        .meta-data {
+            position: relative;
+            width: 190px;
+            left: 0px;
+            padding-top: 10px;
+            padding-left: 6px;
+            border-top: 1px dashed #e5e5e5;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+        }
+
+        .meta-data span {
+            float: left;
+            width: 60px;
+            border-left: 1px solid #e5e5e5;
+        }
+
+        .times {
+            display: block;
+            margin: 15px 0;
+        }
+
+        /*首先，我们要创建一个容器class*/
+        .times ul {
+            margin-left: 25px;
+            border-left: 2px solid #ddd;
+            list-style-type: none;
+        }
+
+        /*利用ul标签的特性，设置外边框左移25px，左边边框是2px粗的实心线，颜色一般要浅一点*/
+        .times ul li {
+            width: 100%;
+            margin-left: -12px;
+            line-height: 20px;
+            font-weight: narmal;
+        }
+
+        /*一般情况，通过li标签控制圆点回到时间线上，然后控制要出现的文字大小和是否粗体*/
+        .times ul li b {
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border: 2px solid #555;
+            margin: 5px;
+            border-radius: 6px;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            overflow: hidden;
+            display: inline-block;
+            float: left;
+        }
+
+        /*利用处理加粗以外没有其它特别属性b标签做时间轴的圆点。*/
+        .times ul li span {
+            padding-left: 7px;
+            font-size: 12px;
+            line-height: 20px;
+            color: #555;
+        }
+
+        /*设置span标签的属性，让它来做时间显示，加一点边距，使时间显示离时间线远一点*/
+        .times ul li:hover b {
+            border: 2px solid #ff6600;
+        }
+
+        /*注意这一行，前面的li标签后面加了一个:hover伪属性，意思是鼠标移上来，激活后面的属性，这样可以设置鼠标移动到整个时间范围的时候，时间点和时间显示会变色*/
+        .times ul li:hover span {
+            color: #ff6600;
+        }
+
+        /*同上*/
+        .times ul li p {
+            padding-left: 15px;
+            font-size: 14px;
+            line-height: 25px;
+        }
+
+        /*这里利用段落标签p做文字介绍*/
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        .delbtn {
+            position: absolute;
+            left: 160px;
         }
     </style>
 </head>
@@ -98,6 +195,27 @@
                     <input type="text" name='intro'>
                 </div>
 
+                <div class="times">
+                    <ul>
+                        <li><b></b><span>2010-01-01</span>
+                            <p>这里是2010年哟</p>
+                        </li>
+                        <!--b标签不输入内容，span标签内输入时间不限制格式，p标签内输入介绍内容。注意，标签内不能使用div分割-->
+                        <li><b></b><span>2011-01-01</span>
+                            <p>这里是2011年哟</p>
+                        </li>
+                        <li><b></b><span>2012-01-01</span>
+                            <p>这里是2012年哟</p>
+                        </li>
+                        <li><b></b><span>2013-01-01</span>
+                            <p>这里是2013年哟</p>
+                        </li>
+                        <li><b></b><span>2014-01-01</span>
+                            <p>这里是2014年哟</p>
+                        </li>
+                    </ul>
+                </div>
+
                 <input type="submit" value="提交">
 
         </div>
@@ -122,28 +240,31 @@
         </div>
 
         <div class="projects_container">
-            <div class="project_box card blue-grey lighten-3">
-                <div class="card-content white-text">
-                    <span class="card-title">Card Title</span>
-                    <p>西塞山前白鹭飞，桃花流水鳜鱼肥顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶顶</p>
-                </div>
-            </div>
+
         </div>
-        <div class="project_box">
+
+
+        <div class="times">
+            <ul>
+                <li><b></b><span>2010-01-01</span>
+                    <p>这里是2010年哟</p>
+                </li>
+                <!--b标签不输入内容，span标签内输入时间不限制格式，p标签内输入介绍内容。注意，标签内不能使用div分割-->
+                <li><b></b><span>2011-01-01</span>
+                    <p>这里是2011年哟</p>
+                </li>
+                <li><b></b><span>2012-01-01</span>
+                    <p>这里是2012年哟</p>
+                </li>
+                <li><b></b><span>2013-01-01</span>
+                    <p>这里是2013年哟</p>
+                </li>
+                <li><b></b><span>2014-01-01</span>
+                    <p>这里是2014年哟</p>
+                </li>
+            </ul>
         </div>
-        <div class="project_box">
-        </div>
-        <div class="project_box">
-        </div>
-        <div class="project_box">
-        </div>
-        <div class="project_box">
-        </div>
-        <div class="project_box">
-        </div>
-        <div class="project_box">
-        </div>
-        </div>
+
 
 
 
@@ -164,7 +285,13 @@
                 .on('mouseleave', '.todo_cell', function () {
                     $(this).find('.edit-btns').addClass('hide');
                     $(this).find('.time').removeClass('hide');
+                });
 
+            $(document).on('mouseenter', '.project_box', function () {
+                $(this).addClass('pointer')
+            })
+                .on('mouseleave', '.project_box', function () {
+                    $(this).removeClass('pointer')
                 });
         });
 
@@ -175,25 +302,29 @@
 
                 $('.projects_container').append(
                     `
-                    <div class="project_box card blue-grey lighten-3">
-                        <div class="card-content white-text">
-                        <span class="card-title">${projects[i].title}</span>
-                        <p>${projects[i].intro}</p>
-                        </div>
+                    <div class="project_box" data-id='${projects[i].project_id}'>
+                    <a class="delbtn btn-floating btn-small waves-effect waves-light red"><i class="material-icons">clear</i></a>
+
+                    <div class="task-title">${projects[i].title}</div>
+                    <div class="meta-data">
+                    <span class="task-count">
+                        0<br>总任务
+                    </span>
+                    <span>
+                        0<br>已完成
+                    </span>
+                    <span>
+                        0%<br>进度
+                    </span>
+                    </div>
                     </div>
                     `
+
                     //<i class="material-icons small-icon left reorderbtn">reorder</i>
                 )
             }
         }
 
-        // let todos = undefined
-        // ajax('GET', '/all', null, '', function (r) {
-        //     todos = JSON.parse(r.response)
-        //     console.log(typeof (todos))
-        //     inserTodos(todos)
-        //     //console.log(r.status, r.response)
-        // })
 
 
         //普通表单
@@ -210,6 +341,53 @@
         });
 
 
+    </script>
+    <script>
+        $('.projects_container').click(function (event) {
+            target = event.target;
+            project_id = $(target).parents("div").attr('data-id');
+            console.log(project_id)
+            // 请求时间轴
+            $.ajax({
+                type: 'POST',
+                url: './todobyproject',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    'project_id': project_id,
+                }),
+                success: function (r) {
+                    r = JSON.parse(r)
+                    console.log(r)
+                }
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                //错误信息
+                console.log("AJAX FAIL")
+            });
+
+            //如果点击到删除按钮
+            if (target.classList.contains('material-icons')) {
+                $.ajax({
+                    type: 'POST',
+                    url: './delete',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({
+                        'project_id': project_id,
+                    }),
+                    success: function (r) {
+                        r = JSON.parse(r)
+                        console.log(r)
+                        t = `[data-id='${project_id}']`
+                        $(t).remove()
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    //错误信息
+                    console.log("AJAX FAIL")
+                });
+            }
+
+        })
     </script>
 </body>
 
