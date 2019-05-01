@@ -10,6 +10,7 @@ from flask import (
 )
 
 from models.project import Project
+from models.todo import Todo
 from utils import log
 main = Blueprint('projects', __name__)
 
@@ -30,11 +31,12 @@ def add():
     t = Project.inserProject(form)
     return t
 
+'''本函数注意在删除项目的时候，项目内todo也全部删除'''
 @main.route("/delete", methods=['POST'])
 def delete():
     json = request.get_json()
-    print('!!!!!!!!!',json)
     print('!!project delete json', json['project_id'])
+    Todo.delTodobyProject(json['project_id'])
     result_status = Project.delProject(json)
     print(result_status)
     return result_status

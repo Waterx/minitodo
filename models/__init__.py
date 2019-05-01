@@ -51,5 +51,5 @@ class Model():
 
     @classmethod
     def get_all_by(cls, **kwargs):
-        t = None
-        pass
+        t = cls.objects(**kwargs)
+        return t

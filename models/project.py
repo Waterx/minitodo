@@ -38,10 +38,10 @@ class Project(Document, Model):
         )
         return json.dumps(d)
 
+
     @classmethod
     def delProject(cls, form):
         pid = form['project_id']
-        print(pid)
         flag = Project.objects(project_id=pid).delete()
         print('model project', 'delProject', flag)
         if flag != 1:

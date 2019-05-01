@@ -108,12 +108,13 @@ class Todo(Document, Model):
         result = json.dumps(t.todo_id)
         return result
 
-    def todoDict(self):
-        return {
-            'title': self.title,
-            'todo_id': self.todo_id,
-            'done': self.done
-        }
+    @classmethod
+    def delTodobyProject(cls, pid):
+        project = None
+        for p in Project.objects(project_id=pid):
+            project = p
+            break
+        Todo.objects(project=project).delete()
 
 
 class Todox():
