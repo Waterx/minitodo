@@ -80,11 +80,11 @@ class Todo(Document, Model):
             return 'wrong delete'
         return json.dumps(flag)
 
+
     '''
         该函数作用是改变todo的done值，返回todo_id的字符串
         注意，这里的form实际上是一个json串
     '''
-
     @classmethod
     def toggleTodo(cls, form):
         t = None
@@ -116,11 +116,26 @@ class Todo(Document, Model):
             break
         Todo.objects(project=project).delete()
 
+    @classmethod
+    def getTodobyProject(cls, pid):
+        list = []
+        project = None
+        project = Project.get_one_by(project_id=pid)
+        for t in Todo.objects(project=project):
+            dic = {
+                'todo_id': t.todo_id,
+                'title': t.title,
+                'done': t.done,
+                'dead_line': t.dead_line,
+                'updated_time': t.updated_time,
+            }
+            list.append(dic)
+        print('!!model todo gettodobyproj list', list)
+        return json.dumps(list)
 
-class Todox():
-    def __init__(self, form):
-        title = form.title
-        done = form.done
+
+
+
 
 
 # t1 = Todo(

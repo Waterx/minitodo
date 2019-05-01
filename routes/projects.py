@@ -40,3 +40,11 @@ def delete():
     result_status = Project.delProject(json)
     print(result_status)
     return result_status
+
+@main.route("/gettodoinproject", methods=['POST'])
+def getTodoInProject():
+    json = request.get_json()
+    print('!!project gettodoinproject json', json['project_id'])
+    list = Todo.getTodobyProject(json['project_id'])
+    print('!!project gettodoinproject list', list)
+    return list

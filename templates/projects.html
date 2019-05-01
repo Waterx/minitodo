@@ -350,15 +350,15 @@
             // 请求时间轴
             $.ajax({
                 type: 'POST',
-                url: './todobyproject',
+                url: './gettodoinproject',
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
                     'project_id': project_id,
                 }),
                 success: function (r) {
-                    r = JSON.parse(r)
                     console.log(r)
+
                 }
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 //错误信息
@@ -376,7 +376,6 @@
                         'project_id': project_id,
                     }),
                     success: function (r) {
-                        r = JSON.parse(r)
                         console.log(r)
                         t = `[data-id='${project_id}']`
                         $(t).remove()

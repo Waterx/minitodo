@@ -41,6 +41,7 @@ class Project(Document, Model):
 
     @classmethod
     def delProject(cls, form):
+        '''请注意这里的form其实是json'''
         pid = form['project_id']
         flag = Project.objects(project_id=pid).delete()
         print('model project', 'delProject', flag)
