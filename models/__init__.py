@@ -26,7 +26,14 @@ class Model():
                     td[cls.__fields__[i]] = l[cls.__fields__[i]]
                 elif flag is True:
                     if cls.__fields__[i] == 'project':
+                        # l[cls.__fields__[i]]是一个Project object
                         td[cls.__fields__[i]] = l[cls.__fields__[i]].project_id
+                    elif cls.__fields__[i] == 'tag':
+                        print(l[cls.__fields__[i]])
+                        pass
+                        # print('!!!!!!', [l[cls.__fields__[i]].tag_id for a in l[cls.__fields__[i]]])
+                        # td[cls.__fields__[i]]=''
+                        # td[cls.__fields__[i]] = [l[cls.__fields__[i]].tag_id for a in l[cls.__fields__[i]]]
 
             # td = {'todo_id': l.todo_id,
             #       'title': l.title,

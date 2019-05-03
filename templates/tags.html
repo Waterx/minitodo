@@ -182,21 +182,14 @@
     <!-- 弹出来的详细编辑页 -->
     <div id="modal1" class="modal">
         <div class="modal-content">
-            <h4>新建项目</h4>
-            <form action={{ url_for("projects.add") }} method="post" autocomplete="off">
+            <h4>新建标签</h4>
+            <form action={{ url_for("tags.add") }} method="post" autocomplete="off" id=id-newform>
 
                 <div class="modal-box">
-                    项目名称：
+                    标签名称：
                     <input type="text" id="id-modal-title" name='title' />
                     <!-- <input type="hidden" id='hideinput' name='project_id' value="" /> -->
                 </div>
-
-                <div class="modal-box">
-                    项目简介：
-                    <input type="text" name='intro'>
-                </div>
-
-
 
         </div>
 
@@ -217,10 +210,14 @@
 
         </div>
 
-        <div class="projects_container">
+        <div class="tags_container">
 
         </div>
 
+        <div class="chip">
+            Tag
+            <i class="close material-icons">close</i>
+        </div>
 
         <div class="times">
             <ul class="timesul">
@@ -242,24 +239,25 @@
         $(document).ready(function () {
             $('.sidenav').sidenav();
             $('input#input_text').characterCounter();
-            $(document).on('mouseenter', '.todo_cell', function () {
-                $(this).find('.edit-btns').removeClass('hide');
-                $(this).find('.time').addClass('hide');
-            })
-                .on('mouseleave', '.todo_cell', function () {
-                    $(this).find('.edit-btns').addClass('hide');
-                    $(this).find('.time').removeClass('hide');
-                });
 
-            $(document).on('mouseenter', '.project_box', function () {
-                console.log('ru')
-                $(this).addClass('pointer')
-            })
-                .on('mouseleave', '.project_box', function () {
-                    console.log('chu')
-                    $(this).removeClass('pointer')
+            $("#id-newform").submit(function (e) {
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var form = $(this);
+                var url = form.attr('action');
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function (data) {
+                        $('#id-modal-title').val("");
+                        alert(data); // show response from the script.
+                    }
                 });
+            });
         });
+        var log = function () {
+            console.log.apply(console, arguments)
+        }
 
         //普通表单
         $.ajax({
@@ -267,24 +265,24 @@
             url: './all',
             success: function (r) {
                 r = JSON.parse(r)
-                inserProjects(r)
+                log(r)
+                inserTags(r)
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
             //错误信息
             console.log("AJAX FAIL")
         });
 
-        let inserProjects = function (projects) {
-            let undone = 0;
-            for (let i in projects) {
-                console.log(i, ':', projects[i])
+        let inserTags = function (tags) {
+            for (let i in tags) {
+                log(i, ':', tags[i])
 
-                $('.projects_container').append(
+                $('.tags_container').append(
                     `
-                    <div class="project_box" data-id='${projects[i].project_id}'>
+                    <div class="project_box" data-id='${tags[i].tag_id}'>
                     <a class="delbtn btn-floating btn-small waves-effect waves-light red"><i class="material-icons">clear</i></a>
 
-                    <div class="task-title">${projects[i].title}</div>
+                    <div class="task-title">${tags[i].title}</div>
                     <div class="meta-data">
                     <span class="task-count">
                         0<br>总任务
@@ -303,8 +301,6 @@
                 )
             }
         }
-
-
 
 
 

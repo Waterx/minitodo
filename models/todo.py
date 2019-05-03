@@ -4,6 +4,8 @@ import uuid
 import json
 from models import Model
 from models.project import Project
+from models.tag import Tag
+
 class Todo(Document, Model):
 
     '''
@@ -16,7 +18,8 @@ class Todo(Document, Model):
         'dead_line',
         'rank',
         'updated_time',
-        'project'
+        'project',
+        'tag',
         # 'user'
 
     ]
@@ -28,6 +31,7 @@ class Todo(Document, Model):
     rank = StringField(max_length=1)
     updated_time = IntField()
     project = ReferenceField(Project)
+    tag = ListField(ReferenceField(Tag))
     # user = ReferenceField()
 
     # user_id = StringField(default='123')
@@ -61,7 +65,17 @@ class Todo(Document, Model):
         print('!!model reorder', t.rank)
         pid = form.get('project')
         t.project = Project.get_one_by(project_id=pid)
-        print('!!model reorder pid', pid)
+
+        # 注意getlist可以得到重复的键对应的值并生成列表
+        print('!!model reorder tag', form.getlist('tag'))
+        tagidlist = form.getlist('tag')
+        taglist = []
+        # 这里有个命名的坑已解决
+        for i in tagidlist:
+            tag = Tag.get_one_by(tag_id=i)
+            taglist.append(tag)
+        print(taglist)
+        t.tag = taglist
         t.save()
         return tid
 

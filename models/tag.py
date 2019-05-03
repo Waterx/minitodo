@@ -21,7 +21,7 @@ class Tag(Document, Model):
     def inserTag(cls, form):
         t = Tag(
             title=form.get('title', ''),
-            Tag_id=str(uuid.uuid1()),
+            tag_id=str(uuid.uuid1()),
             updated_time=int(time.time())
         )
         t.save()
