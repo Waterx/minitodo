@@ -19,21 +19,22 @@ class Model():
             td = {}
             # len(cls.__fields__)有多少个属性项
             for i in range(len(cls.__fields__)):
-                # print('model getall', getattr(l, cls.__fields__[i]))
                 # 如果这个属性是一个类，判断
-                flag = isinstance(l[cls.__fields__[i]], Model)
-                if flag is False:
+                flag1 = isinstance(l[cls.__fields__[i]], Model)
+                flag2 = isinstance(l[cls.__fields__[i]], list)
+                if flag1 is False:
                     td[cls.__fields__[i]] = l[cls.__fields__[i]]
-                elif flag is True:
+                elif flag1 is True:
                     if cls.__fields__[i] == 'project':
                         # l[cls.__fields__[i]]是一个Project object
                         td[cls.__fields__[i]] = l[cls.__fields__[i]].project_id
-                    elif cls.__fields__[i] == 'tag':
-                        print(l[cls.__fields__[i]])
-                        pass
+
+                if cls.__fields__[i] == 'tag':
+                    td[cls.__fields__[i]] = [a.tag_id for a in l[cls.__fields__[i]]]
+
                         # print('!!!!!!', [l[cls.__fields__[i]].tag_id for a in l[cls.__fields__[i]]])
                         # td[cls.__fields__[i]]=''
-                        # td[cls.__fields__[i]] = [l[cls.__fields__[i]].tag_id for a in l[cls.__fields__[i]]]
+                        #
 
             # td = {'todo_id': l.todo_id,
             #       'title': l.title,
@@ -43,6 +44,7 @@ class Model():
         print("!!Model dict_all", dict_all)
 
         return json.dumps(dict_all)
+        # return '1'
 
     @classmethod
     def get_one_by(cls, **kwargs):
