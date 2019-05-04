@@ -28,3 +28,12 @@ def add():
     print('!!tag add form', form)
     t = Tag.inserTag(form)
     return t
+
+'''本函数注意在删除tag的时候，包含tag的todo只删除tag字段'''
+@main.route("/delete", methods=['POST'])
+def delete():
+    json = request.get_json()
+    print('!!tag delete json', json['tag_id'])
+    result_status = Tag.delTag(json)
+    print(result_status)
+    return result_status

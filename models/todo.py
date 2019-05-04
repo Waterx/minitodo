@@ -31,7 +31,7 @@ class Todo(Document, Model):
     rank = StringField(max_length=1)
     updated_time = IntField()
     project = ReferenceField(Project)
-    tag = ListField(ReferenceField(Tag))
+    tag = ListField(ReferenceField(Tag, reverse_delete_rule=PULL))
     # user = ReferenceField()
 
     # user_id = StringField(default='123')

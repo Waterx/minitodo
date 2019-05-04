@@ -4,8 +4,8 @@ import uuid
 import json
 from models import Model
 
-class Tag(Document, Model):
 
+class Tag(Document, Model):
     __fields__ = [
         'tag_id',
         'title',
@@ -30,3 +30,12 @@ class Tag(Document, Model):
             title=t.title,
         )
         return json.dumps(d)
+
+    @classmethod
+    def delTag(cls, j):
+        tagid = j['tag_id']
+        flag = Tag.objects(tag_id=tagid).delete()
+        print('model tag', 'delTag', flag)
+        if flag != 1:
+            return 'wrong delete'
+        return json.dumps(flag)

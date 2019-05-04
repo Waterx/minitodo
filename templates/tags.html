@@ -307,18 +307,18 @@
 
     </script>
     <script>
-        $('.projects_container').click(function (event) {
+        $('.tags_container').click(function (event) {
             target = event.target;
-            project_id = $(target).parents("div").attr('data-id');
-            console.log(project_id)
+            tag_id = $(target).parents("div").attr('data-id');
+            console.log(tag_id)
             // 请求时间轴
             $.ajax({
                 type: 'POST',
-                url: './gettodoinproject',
+                url: './gettodointag',
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
-                    'project_id': project_id,
+                    'tag_id': tag_id,
                 }),
                 success: function (r) {
                     console.log(r)
@@ -358,11 +358,11 @@
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify({
-                        'project_id': project_id,
+                        'tag_id': tag_id,
                     }),
                     success: function (r) {
                         console.log(r)
-                        t = `[data-id='${project_id}']`
+                        t = `[data-id='${tag_id}']`
                         $(t).remove()
                     }
                 }).fail(function (jqXHR, textStatus, errorThrown) {
