@@ -249,8 +249,31 @@
                     url: url,
                     data: form.serialize(), // serializes the form's elements.
                     success: function (data) {
+                        tags = JSON.parse(data)
                         $('#id-modal-title').val("");
-                        alert(data); // show response from the script.
+                        log(tags); // show response from the script.
+                        $('.tags_container').append(
+                            `
+                            <div class="project_box" data-id='${tags.tag_id}'>
+                            <a class="delbtn btn-floating btn-small waves-effect waves-light red"><i class="material-icons">clear</i></a>
+
+                            <div class="task-title">${tags.title}</div>
+                            <div class="meta-data">
+                            <span class="task-count">
+                                0<br>总任务
+                            </span>
+                            <span>
+                                0<br>已完成
+                            </span>
+                            <span>
+                                0%<br>进度
+                            </span>
+                            </div>
+                            </div>
+                            `
+
+                            //<i class="material-icons small-icon left reorderbtn">reorder</i>
+                        )
                     }
                 });
             });

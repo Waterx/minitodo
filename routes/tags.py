@@ -10,6 +10,8 @@ from flask import (
 )
 
 from models.tag import Tag
+from models.todo import Todo
+
 from utils import log
 main = Blueprint('tags', __name__)
 
@@ -37,3 +39,11 @@ def delete():
     result_status = Tag.delTag(json)
     print(result_status)
     return result_status
+
+@main.route("/gettodointag", methods=['POST'])
+def getTodoInTag():
+    json = request.get_json()
+    print('!!tag gettodointag json', json['tag_id'])
+    list = Todo.getTodobyTag(json['tag_id'])
+    print('!!tag gettodointag list', list)
+    return list

@@ -28,6 +28,7 @@ class Tag(Document, Model):
         print('model Tag insert', t.title)
         d = dict(
             title=t.title,
+            tag_id = t.tag_id,
         )
         return json.dumps(d)
 

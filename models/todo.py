@@ -147,6 +147,22 @@ class Todo(Document, Model):
         print('!!model todo gettodobyproj list', list)
         return json.dumps(list)
 
+    @classmethod
+    def getTodobyTag(cls, pid):
+        list = []
+        tag = None
+        tag = Tag.get_one_by(tag_id=pid)
+        for t in Todo.objects(tag=tag):
+            dic = {
+                'todo_id': t.todo_id,
+                'title': t.title,
+                'done': t.done,
+                'dead_line': t.dead_line,
+                'updated_time': t.updated_time,
+            }
+            list.append(dic)
+        print('!!model todo gettodobytag list', list)
+        return json.dumps(list)
 
 
 
