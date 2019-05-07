@@ -22,11 +22,13 @@ app.secret_key = config.secret_key
 from routes.index import main as index_routes
 from routes.projects import main as projects_routes
 from routes.tags import main as tag_routes
-# from routes.board import main as board_routes
+from routes.notes import main as note_routes
 # from routes.mail import main as mail_routes
 app.register_blueprint(index_routes)
 app.register_blueprint(projects_routes, url_prefix='/projects')
 app.register_blueprint(tag_routes, url_prefix='/tags')
+app.register_blueprint(note_routes, url_prefix='/notes')
+
 # app.register_blueprint(reply_routes, url_prefix='/reply')
 # app.register_blueprint(board_routes, url_prefix='/board')
 # app.register_blueprint(mail_routes, url_prefix='/mail')

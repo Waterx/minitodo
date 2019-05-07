@@ -14,7 +14,7 @@ class Tag(Document, Model):
     ]
 
     tag_id = StringField(required=True)
-    title = StringField(max_length=20)
+    title = StringField(max_length=10)
     updated_time = IntField()
 
     @classmethod

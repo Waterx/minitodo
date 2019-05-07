@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>自在Todo</title>
+    <link rel="shortcut icon" href="/static/images/man.png">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.bootcss.com/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
+        rel="stylesheet"> -->
+
+    <link rel="stylesheet" href="/static/css/jquery.datetimepicker.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .notes_container {
+            width: 75%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- <div class="progress hide jindutiao">
+        <div class="indeterminate"></div>
+    </div> -->
+
+    <!-- 左侧边栏 -->
+    <ul class="sidenav sidenav-fixed">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <img src="/static/images/moutain.jpg">
+                </div>
+                <a href="#user"><img class="circle" src="/static/images/cat.jpg"></a>
+                <a href="#name"><span class="white-text name">John Doe</span></a>
+                <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+            </div>
+        </li>
+        <li><a href="/" class='waves-effect'><i class="material-icons">done_all</i>任务<span
+                    class="new badge red todobadge" data-badge-caption="todo">0</span></a></li>
+        <li><a href="/projects" class='waves-effect'><i class="material-icons">folder</i>项目</a></li>
+        <li><a href="/tags" class='waves-effect'><i class="material-icons">bookmark</i>标签</a></li>
+        <li><a href="/notes" class='waves-effect'><i class="material-icons">receipt</i>便签</a></li>
+
+
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li><a class="subheader">Subheader</a></li>
+        <li><a class="subheader">Subheader</a></li>
+
+        <li><a class="subheader">Subheader</a></li>
+
+        <li><a class="subheader">Subheader</a></li>
+
+        <li class='margin-bottom'><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+    </ul>
+
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Logo</a>
+                <ul class="right">
+                    <li><a href="sass.html"><i class="material-icons">search</i></a></li>
+                    <li><a href="badges.html"><i class="material-icons">view_module</i></a></li>
+                    <li><a href="collapsible.html"><i class="material-icons">refresh</i></a></li>
+                    <li><a href="mobile.html"><i class="material-icons">more_vert</i></a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!-- 弹出来的详细编辑页 -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>新建标签</h4>
+            <form action={{ url_for("notes.add") }} method="post" autocomplete="off" id=id-newform>
+
+                <div class="modal-box">
+                    便签内容：
+                    <input type="text" id="id-modal-title" name='title' />
+                    <!-- <input type="hidden" id='hideinput' name='project_id' value="" /> -->
+                </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <!-- <a href="#!" class=" waves-effect waves-green btn-flat">
+            </a> -->
+            <input type="submit" class='modal-close btn' value="保存">
+            </form>
+
+        </div>
+    </div>
+
+
+    <main>
+        <div class="btn_control">
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">New</a>
+
+        </div>
+
+        <div class="notes_container">
+            <div class="row">
+            </div>
+
+        </div>
+
+
+
+
+
+    </main>
+
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        var log = function () {
+            console.log.apply(console, arguments)
+        }
+        var timetodate = function (unixtime) {
+            var date = new Date(unixtime * 1000);
+            Y = date.getFullYear() + '-';
+            M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+            D = date.getDate() + ' ';
+            h = date.getHours() + ':';
+            m = date.getMinutes() + ':';
+            s = date.getSeconds();
+            ttt = Y + M + D + h + m + s;
+            // 简便方法
+            // t2 = date.toLocaleString();
+            // log(t2);
+            console.log(Y + M + D + h + m + s);
+            return ttt;
+        }
+
+        M.AutoInit();
+        $(document).ready(function () {
+            $('.sidenav').sidenav();
+            $('input#input_text').characterCounter();
+            //new一个新note
+            $("#id-newform").submit(function (e) {
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var form = $(this);
+                var url = form.attr('action');
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function (data) {
+                        notes = JSON.parse(data)
+                        $('#id-modal-title').val("");
+                        log(notes); // show response from the script.
+                        $('.row').append(
+                            `
+                            <div class="col s3" data-id=${notes.note_id}>
+                            <div class="card-panel teal">
+                            <span class="white-text">${notes.title}
+                            </span>
+                            <div class="card-action orange-text">
+                            ${notes.updated_time}
+                            </div>
+                            </div>
+                            
+                            </div>
+                            `
+                        )
+                    }
+                });
+            });
+        });
+
+
+        //普通表单
+        $.ajax({
+            type: 'GET',
+            url: './all',
+            success: function (r) {
+                r = JSON.parse(r)
+                log(r)
+                inserNotes(r)
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            //错误信息
+            console.log("AJAX FAIL")
+        });
+
+        let inserNotes = function (notes) {
+            for (let i in notes) {
+                log(i, ':', notes[i])
+
+                $('.row').append(
+                    `
+                    <div class="col s3" data-id=${notes[i].note_id}>
+                        <div class="card-panel teal">
+                        <span class="white-text">${notes[i].title}
+                        </span>
+                        <div class="orange-text">
+                            ${timetodate(notes[i].updated_time)}
+                        </div>
+                        </div> 
+                    </div>
+                    `
+
+                    //<i class="material-icons small-icon left reorderbtn">reorder</i>
+                )
+            }
+        }
+
+
+
+
+    </script>
+    <script>
+        $('.tags_container').click(function (event) {
+            target = event.target;
+            tag_id = $(target).parents("div").attr('data-id');
+            console.log(tag_id)
+            //如果点击到删除按钮
+            if (target.classList.contains('material-icons')) {
+                $.ajax({
+                    type: 'POST',
+                    url: './delete',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({
+                        'tag_id': tag_id,
+                    }),
+                    success: function (r) {
+                        console.log(r)
+                        t = `[data-id='${tag_id}']`
+                        $(t).remove()
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    //错误信息
+                    console.log("AJAX FAIL")
+                });
+            }
+
+        })
+    </script>
+</body>
+
+</html>
