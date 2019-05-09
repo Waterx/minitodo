@@ -70,7 +70,7 @@ class User(Document, Model):
                 email=email,
                 user_id=str(uuid.uuid1()),
                 updated_time=int(time.time()),
-                icon='/static/images/default.png',
+                icon='/static/images/clock.gif',
                 password=User.salted_password(pwd)
             )
             t.save()

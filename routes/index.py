@@ -12,6 +12,7 @@ from flask import (
 from models.todo import Todo
 from models.user import User
 from utils import log
+import json
 main = Blueprint('index', __name__)
 
 
@@ -20,9 +21,10 @@ def current_user():
     # 然后 User.find_by 来用 id 找用户
     # 找不到就返回 None
     uid = session.get('user_id', -1)
+    print('uid', uid)
     if uid==-1:
         return None
-    u = User.get_one_by(id=uid)
+    u = User.get_one_by(user_id=uid)
     return u
 
 
@@ -38,15 +40,12 @@ def current_user():
 
 @main.route("/")
 def index():
-    print('index1')
-
     u = current_user()
-    # if u is not None:
-    #     return render_template("index.html", user=u)
-    # else:
-    #     return render_template("login.html", user=u)
-    print('index2')
-    return render_template("login.html", user=u)
+    if u is not None:
+        # 若有用户
+        return render_template("index.html", user=u)
+    else:
+        return render_template("login.html", user=u)
 
 @main.route("/register", methods=['POST'])
 def register():
@@ -61,18 +60,20 @@ def register():
 def login():
     form = request.form
     u = User.validate_login(form)
-    print('route index login u', u.email)
+
     if u is None:
         # 转到 topic.index 页面
-        print('meiyouyonghu')
-        return redirect(url_for('notes.index'))
+        print('没有这个用户')
+        return redirect(url_for('.index'))
     else:
-        print('youyonghu')
+        print('route index login u', u.email)
+        print('有这个用户')
         # session 中写入 user_id
-        session['user_id'] = u.id
+        session['user_id'] = u.user_id
+        print(session['user_id'])
         # 设置 cookie 有效期为 永久
         session.permanent = True
-        return redirect(url_for('notes.index'))
+        return redirect(url_for('.index'))
 
 @main.route("/add", methods=['POST'])
 def add():

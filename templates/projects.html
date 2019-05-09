@@ -140,9 +140,9 @@
                 <div class="background">
                     <img src="/static/images/moutain.jpg">
                 </div>
-                <a href="#user"><img class="circle" src="/static/images/cat.jpg"></a>
-                <a href="#name"><span class="white-text name">John Doe</span></a>
-                <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+                <a href="#user"><img class="circle" src="{{ user.icon }}"></a>
+                <a href="#name"><span class="white-text name">{{ user.name }}</span></a>
+                <a href="#email"><span class="white-text email">{{ user.email }}</span></a>
             </div>
         </li>
         <li><a href="/" class='waves-effect'><i class="material-icons">done_all</i>任务<span

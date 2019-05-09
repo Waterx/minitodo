@@ -11,13 +11,13 @@ from flask import (
 
 from models.note import Note
 from models.todo import Todo
-
+from routes.index import current_user
 from utils import log
 main = Blueprint('notes', __name__)
 
 @main.route("/")
 def index():
-    return render_template("notes.html")
+    return render_template("notes.html", user=current_user())
 
 @main.route("/all")
 def all():
