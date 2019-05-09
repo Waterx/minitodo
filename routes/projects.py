@@ -17,11 +17,18 @@ main = Blueprint('projects', __name__)
 
 @main.route("/")
 def index():
-    return render_template("projects.html", user=current_user())
+    u = current_user()
+    if u is not None:
+        # 若有用户
+        return render_template("projects.html", user=u)
+    else:
+        # 若无用户
+        return redirect(url_for('index.index'))
 
 @main.route("/all")
 def all():
-    list = Project.getAll()
+    u = current_user()
+    list = Project.getAll(u)
     return (list)
 
 @main.route("/add", methods=['POST'])
@@ -29,7 +36,8 @@ def add():
     form = request.form
     print('!!project add form', form)
     # ImmutableMultiDict([('title', '的撒发射点法大师傅大师傅')])
-    t = Project.inserProject(form)
+    u = current_user()
+    t = Project.inserProject(form, u)
     return t
 
 '''本函数注意在删除项目的时候，项目内todo也全部删除'''

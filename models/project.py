@@ -3,7 +3,7 @@ from mongoengine import *
 import uuid
 import json
 from models import Model
-
+from models.user import User
 class Project(Document, Model):
 
     __fields__ = [
@@ -12,7 +12,7 @@ class Project(Document, Model):
         'done',
         'intro',
         'updated_time',
-        # 'user'
+        'user'
     ]
 
     project_id = StringField(required=True)
@@ -20,15 +20,17 @@ class Project(Document, Model):
     done = BooleanField(default=False)
     intro = StringField(max_length=50)
     updated_time = IntField()
+    user = ReferenceField(User)
 
     @classmethod
-    def inserProject(cls, form):
+    def inserProject(cls, form, u):
         t = Project(
             title=form.get('title', ''),
             intro=form.get('intro', ''),
             done=False,
             project_id=str(uuid.uuid1()),
-            updated_time=int(time.time())
+            updated_time=int(time.time()),
+            user=u,
         )
         t.save()
         print('model project insert', t.title, t.intro)

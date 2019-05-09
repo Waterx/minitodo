@@ -21,10 +21,11 @@ def current_user():
     # 然后 User.find_by 来用 id 找用户
     # 找不到就返回 None
     uid = session.get('user_id', -1)
-    print('uid', uid)
     if uid==-1:
+        print('当前用户不存在')
         return None
     u = User.get_one_by(user_id=uid)
+    print('当前用户：', u.email)
     return u
 
 
@@ -70,23 +71,27 @@ def login():
         print('有这个用户')
         # session 中写入 user_id
         session['user_id'] = u.user_id
-        print(session['user_id'])
+        print('写入session', session['user_id'])
         # 设置 cookie 有效期为 永久
         session.permanent = True
         return redirect(url_for('.index'))
+
 
 @main.route("/add", methods=['POST'])
 def add():
     form = request.form
     print('!!add form', form)
     # ImmutableMultiDict([('title', '的撒发射点法大师傅大师傅')])
-    t = Todo.inserTodo(form)
+    u = current_user()
+    # u代表user
+    t = Todo.inserTodo(form, u)
     return redirect(url_for('.index'))
+
 
 @main.route("/all")
 def all():
-    import json
-    t_list = Todo.getAll()
+    u = current_user()
+    t_list = Todo.getAll(u)
     return (t_list)
 
 @main.route("/delete", methods=['POST'])

@@ -17,18 +17,25 @@ main = Blueprint('tags', __name__)
 
 @main.route("/")
 def index():
-    return render_template("tags.html", user=current_user())
-
+    u = current_user()
+    if u is not None:
+        # 若有用户
+        return render_template("tags.html", user=u)
+    else:
+        # 若无用户
+        return redirect(url_for('index.index'))
 @main.route("/all")
 def all():
-    list = Tag.getAll()
+    u = current_user()
+    list = Tag.getAll(u)
     return (list)
 
 @main.route("/add", methods=['POST'])
 def add():
     form = request.form
     print('!!tag add form', form)
-    t = Tag.inserTag(form)
+    u = current_user()
+    t = Tag.inserTag(form, u)
     return t
 
 '''本函数注意在删除tag的时候，包含tag的todo只删除tag字段'''

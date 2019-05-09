@@ -5,6 +5,9 @@ import json
 from models import Model
 from models.project import Project
 from models.tag import Tag
+from models.user import User
+
+
 
 class Todo(Document, Model):
 
@@ -20,7 +23,7 @@ class Todo(Document, Model):
         'updated_time',
         'project',
         'tag',
-        # 'user'
+        'user',
 
     ]
 
@@ -32,7 +35,7 @@ class Todo(Document, Model):
     updated_time = IntField()
     project = ReferenceField(Project)
     tag = ListField(ReferenceField(Tag, reverse_delete_rule=PULL))
-    # user = ReferenceField()
+    user = ReferenceField(User)
 
     # user_id = StringField(default='123')
 
@@ -44,13 +47,14 @@ class Todo(Document, Model):
     #     return m
 
     @classmethod
-    def inserTodo(cls, form):
+    def inserTodo(cls, form, u):
         t = Todo(
             title=form.get('title', ''),
             done=False,
             todo_id=str(uuid.uuid1()),
             rank=form.get('rank', 3),
-            updated_time=int(time.time())
+            updated_time=int(time.time()),
+            user=u
         )
         t.save()
 

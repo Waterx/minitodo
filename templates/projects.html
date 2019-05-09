@@ -183,7 +183,7 @@
     <div id="modal1" class="modal">
         <div class="modal-content">
             <h4>新建项目</h4>
-            <form action={{ url_for("projects.add") }} method="post" autocomplete="off">
+            <form action={{ url_for("projects.add") }} method="post" autocomplete="off" id=id-newform>
 
                 <div class="modal-box">
                     项目名称：
@@ -259,6 +259,47 @@
                     console.log('chu')
                     $(this).removeClass('pointer')
                 });
+        });
+
+        var log = function () {
+            console.log.apply(console, arguments)
+        }
+        $("#id-newform").submit(function (e) {
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+            var form = $(this);
+            var url = form.attr('action');
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(), // serializes the form's elements.
+                success: function (data) {
+                    projects = JSON.parse(data)
+                    $('#id-modal-title').val("");
+                    log(projects); // show response from the script.
+                    $('.projects_container').append(
+                        `
+                            <div class="project_box" data-id='${projects.project_id}'>
+                    <a class="delbtn btn-floating btn-small waves-effect waves-light red"><i class="material-icons">clear</i></a>
+
+                    <div class="task-title">${projects.title}</div>
+                    <div class="meta-data">
+                    <span class="task-count">
+                        0<br>总任务
+                    </span>
+                    <span>
+                        0<br>已完成
+                    </span>
+                    <span>
+                        0%<br>进度
+                    </span>
+                    </div>
+                    </div>
+                            `
+
+                        //<i class="material-icons small-icon left reorderbtn">reorder</i>
+                    )
+                }
+            });
         });
 
         //普通表单

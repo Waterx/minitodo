@@ -17,18 +17,26 @@ main = Blueprint('notes', __name__)
 
 @main.route("/")
 def index():
-    return render_template("notes.html", user=current_user())
+    u = current_user()
+    if u is not None:
+        # 若有用户
+        return render_template("notes.html", user=u)
+    else:
+        # 若无用户
+        return redirect(url_for('index.index'))
 
 @main.route("/all")
 def all():
-    list = Note.getAll()
+    u=current_user()
+    list = Note.getAll(u)
     return (list)
 
 @main.route("/add", methods=['POST'])
 def add():
     form = request.form
     print('!!note add form', form)
-    t = Note.inserNote(form)
+    u = current_user()
+    t = Note.inserNote(form, u)
     return t
 
 @main.route("/delete", methods=['POST'])
