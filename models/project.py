@@ -4,6 +4,8 @@ import uuid
 import json
 from models import Model
 from models.user import User
+
+
 class Project(Document, Model):
 
     __fields__ = [
@@ -21,6 +23,7 @@ class Project(Document, Model):
     intro = StringField(max_length=50)
     updated_time = IntField()
     user = ReferenceField(User)
+
 
     @classmethod
     def inserProject(cls, form, u):

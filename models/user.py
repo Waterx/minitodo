@@ -21,7 +21,7 @@ class User(Document, Model):
     name = StringField(max_length=20)
     email = StringField(required=True, max_length=30)
     password = StringField(required=True, max_length=100)
-    icon = StringField(max_length=50)
+    icon = StringField(max_length=100)
     updated_time = IntField()
 
 
@@ -70,7 +70,7 @@ class User(Document, Model):
                 email=email,
                 user_id=str(uuid.uuid1()),
                 updated_time=int(time.time()),
-                icon='/static/images/clock.gif',
+                icon='/static/images/cat.jpg',
                 password=User.salted_password(pwd)
             )
             t.save()

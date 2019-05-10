@@ -5,6 +5,7 @@ import json
 from models import Model
 from models.user import User
 
+
 class Tag(Document, Model):
     __fields__ = [
         'tag_id',
@@ -24,13 +25,13 @@ class Tag(Document, Model):
             title=form.get('title', ''),
             tag_id=str(uuid.uuid1()),
             updated_time=int(time.time()),
-            user = u,
+            user=u,
         )
         t.save()
         print('model Tag insert', t.title)
         d = dict(
             title=t.title,
-            tag_id = t.tag_id,
+            tag_id=t.tag_id,
         )
         return json.dumps(d)
 

@@ -31,10 +31,9 @@ class Model():
 
                 if cls.__fields__[i] == 'tag':
                     td[cls.__fields__[i]] = [a.tag_id for a in l[cls.__fields__[i]]]
+                if cls.__fields__[i] == 'users':
+                    td[cls.__fields__[i]] = [a.user_id for a in l[cls.__fields__[i]]]
 
-                        # print('!!!!!!', [l[cls.__fields__[i]].tag_id for a in l[cls.__fields__[i]]])
-                        # td[cls.__fields__[i]]=''
-                        #
 
             # td = {'todo_id': l.todo_id,
             #       'title': l.title,

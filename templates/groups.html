@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/static/css/jquery.datetimepicker.css">
     <link rel="stylesheet" href="/static/css/style.css">
     <style>
-        .notes_container {
+        .groups_container {
             width: 75%;
         }
     </style>
@@ -75,12 +75,17 @@
     <!-- 弹出来的详细编辑页 -->
     <div id="modal1" class="modal">
         <div class="modal-content">
-            <h4>新建便签Note</h4>
-            <form action={{ url_for("notes.add") }} method="post" autocomplete="off" id=id-newform>
+            <h4>新建群组</h4>
+            <form action={{ url_for("groups.add") }} method="post" autocomplete="off" id=id-newform>
 
                 <div class="modal-box">
-                    便签内容：
-                    <input type="text" id="id-modal-title" name='title' />
+                    群组名称：
+                    <input type="text" id="id-modal-name" name='name' />
+                    <!-- <input type="hidden" id='hideinput' name='project_id' value="" /> -->
+                </div>
+                <div class="modal-box">
+                    群组简介：
+                    <input type="text" id="id-modal-intro" name='intro' />
                     <!-- <input type="hidden" id='hideinput' name='project_id' value="" /> -->
                 </div>
 
@@ -100,9 +105,10 @@
         <div class="btn_control">
             <a class="waves-effect waves-light btn modal-trigger" href="#modal1">New</a>
 
+
         </div>
 
-        <div class="notes_container">
+        <div class="groups_container">
             <div class="row">
             </div>
 
@@ -116,48 +122,13 @@
 
 
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-    <script src="/static/js/materialize.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
-        M.AutoInit();
-        $(document).ready(function () {
-            $('.sidenav').sidenav();
-            $('input#input_text').characterCounter();
-            //new一个新note
-            $("#id-newform").submit(function (e) {
-                e.preventDefault(); // avoid to execute the actual submit of the form.
-                var form = $(this);
-                var url = form.attr('action');
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: form.serialize(), // serializes the form's elements.
-                    success: function (data) {
-                        notes = JSON.parse(data)
-                        $('#id-modal-title').val("");
-                        log(notes); // show response from the script.
-                        $('.row').append(
-                            `
-                            <div class="col s3" data-id=${notes.note_id}>
-                            <div class="card-panel teal">
-                            <span class="white-text">${notes.title}
-                            </span>
-                            <div class="card-action orange-text">
-                            ${notes.updated_time}
-                            </div>
-                            </div>
-                            
-                            </div>
-                            `
-                        )
-                    }
-                });
-            });
-        });
         var log = function () {
             console.log.apply(console, arguments)
         }
-        var timetodatem = function (unixtime) {
-            let date = new Date(unixtime * 1000);
+        var timetodate = function (unixtime) {
+            var date = new Date(unixtime * 1000);
             Y = date.getFullYear() + '-';
             M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
             D = date.getDate() + ' ';
@@ -172,6 +143,41 @@
             return ttt;
         }
 
+        M.AutoInit();
+        $(document).ready(function () {
+            $('.sidenav').sidenav();
+            $('input#input_text').characterCounter();
+            //new一个新note
+            $("#id-newform").submit(function (e) {
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var form = $(this);
+                var url = form.attr('action');
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function (data) {
+                        groups = JSON.parse(data)
+                        $('#id-modal-title').val("");
+                        log(groups); // show response from the script.
+                        $('.row').append(
+                            `
+                            <div class="col s12" data-id=${groups.group_id}>
+                            <div class="card-panel teal">
+                            <span class="white-text">${groups.name}
+                            </span>
+                            <div class="card-action orange-text">
+                            ${groups.updated_time}
+                            </div>
+                            </div>
+                            
+                            </div>
+                            `
+                        )
+                    }
+                });
+            });
+        });
 
 
         //普通表单
@@ -181,25 +187,25 @@
             success: function (r) {
                 r = JSON.parse(r)
                 log(r)
-                inserNotes(r)
+                inserGroups(r)
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
             //错误信息
             console.log("AJAX FAIL")
         });
 
-        let inserNotes = function (notes) {
-            for (let i in notes) {
-                log(i, ':', notes[i])
+        let inserGroups = function (groups) {
+            for (let i in groups) {
+                log(i, ':', groups[i])
 
                 $('.row').append(
                     `
-                    <div class="col s3" data-id=${notes[i].note_id}>
+                    <div class="col s12" data-id=${groups[i].group_id}>
                         <div class="card-panel teal">
-                        <span class="white-text">${notes[i].title}
+                        <span class="white-text">${groups[i].name}
                         </span>
                         <div class="orange-text">
-                            ${(notes[i].updated_time)}
+                            ${(groups[i].updated_time)}
                         </div>
                         </div> 
                     </div>
