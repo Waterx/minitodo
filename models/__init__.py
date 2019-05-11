@@ -12,8 +12,12 @@ class Model():
     '''得到这张表的所有项的所有属性'''
 
     @classmethod
-    def getAll(cls, u):
-        t_list = cls.objects(user=u)
+    def getAll(cls, u, g):
+        t_list=None
+        if u is not None:
+            t_list = cls.objects(user=u, group=None)
+        if g is not None:
+            t_list = cls.objects(group=g)
         dict_all = []
         for l in t_list:
             td = {}

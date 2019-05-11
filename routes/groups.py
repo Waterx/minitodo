@@ -28,7 +28,7 @@ def index():
 @main.route("/all")
 def all():
     u = current_user()
-    list = Group.getAll(u)
+    list = Group.getAll(u, None)
     return list
 
 '''得到所有参加的群组'''
@@ -46,7 +46,7 @@ def add():
     g = Group.addGroup(form, u)
     return g
 
-'''用户参加群组'''
+'''用户参加群组，暂时的方法是通过groupid参加'''
 @main.route('/participate', methods=['POST'])
 def participate():
     form = request.form
@@ -55,8 +55,3 @@ def participate():
     g = Group.participateGroup(form, u)
     return g
 
-@main.route('/<gid>')
-def detail(gid):
-
-    print(gid)
-    return ''

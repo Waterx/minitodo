@@ -28,7 +28,7 @@ def index():
 @main.route("/all")
 def all():
     u = current_user()
-    list = Project.getAll(u)
+    list = Project.getAll(u, None)
     return (list)
 
 @main.route("/add", methods=['POST'])

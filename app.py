@@ -24,12 +24,18 @@ from routes.projects import main as projects_routes
 from routes.tags import main as tags_routes
 from routes.notes import main as notes_routes
 from routes.groups import main as groups_routes
+
+from routes.g_index import main as g_index_routes
+from routes.g_projects import main as g_projects_routes
 # from routes.mail import main as mail_routes
 app.register_blueprint(index_routes)
 app.register_blueprint(projects_routes, url_prefix='/projects')
 app.register_blueprint(tags_routes, url_prefix='/tags')
 app.register_blueprint(notes_routes, url_prefix='/notes')
 app.register_blueprint(groups_routes, url_prefix='/groups')
+
+app.register_blueprint(g_index_routes, url_prefix='/groups')
+app.register_blueprint(g_projects_routes, url_prefix='/groups')
 
 # app.register_blueprint(reply_routes, url_prefix='/reply')
 # app.register_blueprint(board_routes, url_prefix='/board')

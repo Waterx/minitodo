@@ -84,14 +84,14 @@ def add():
     # ImmutableMultiDict([('title', '的撒发射点法大师傅大师傅')])
     u = current_user()
     # u代表user
-    t = Todo.inserTodo(form, u)
+    t = Todo.inserTodo(form, u, None)
     return redirect(url_for('.index'))
 
 
 @main.route("/all")
 def all():
     u = current_user()
-    t_list = Todo.getAll(u)
+    t_list = Todo.getAll(u, None)
     return (t_list)
 
 @main.route("/delete", methods=['POST'])

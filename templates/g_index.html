@@ -43,18 +43,23 @@
         <li>
             <div class="user-view">
                 <div class="background">
-                    <img src="/static/images/moutain.jpg">
+                    <img src="/static/images/moutain2.jpg">
                 </div>
-                <a href="#user"><img class="circle" src="{{ user.icon }}"></a>
+                <a href="#user"><img class="circle" src="{{ user.icon }}">
+                    <img class="circle" src="{{ group.icon }}" style="
+                    position: absolute;
+                    left: 120px;
+                    top: 32px;
+                "></a>
                 <a href="#name"><span class="white-text name">{{ user.name }}</span></a>
                 <a href="#email"><span class="white-text email">{{ user.email }}</span></a>
             </div>
         </li>
-        <li><a href="/" class='waves-effect'><i class="material-icons">done_all</i>任务<span
+        <li><a href="{{group.group_id}}" class='waves-effect'><i class="material-icons">done_all</i>任务<span
                     class="new badge red todobadge" data-badge-caption="todo">0</span></a></li>
-        <li><a href="/projects" class='waves-effect'><i class="material-icons">folder</i>项目</a></li>
-        <li><a href="/tags" class='waves-effect'><i class="material-icons">bookmark</i>标签</a></li>
-        <li><a href="/notes" class='waves-effect'><i class="material-icons">receipt</i>便签</a></li>
+        <li><a href="{{group.group_id}}/projects" class='waves-effect'><i class="material-icons">folder</i>项目</a></li>
+        <li><a href="{{group.group_id}}/tags" class='waves-effect'><i class="material-icons">bookmark</i>标签</a></li>
+        <li><a href="{{group.group_id}}/notes" class='waves-effect'><i class="material-icons">receipt</i>便签</a></li>
 
 
         <li>
@@ -62,10 +67,10 @@
         </li>
 
 
-        <li><a href="/groups" class='waves-effect'><i class="material-icons">group</i>群组</a></li>
-        <li><a class="subheader">Subheader</a></li>
-
-        <li><a class="subheader">Subheader</a></li>
+        <li><a href="{{group.group_id}}/groups" class='waves-effect'><i class="material-icons">group</i>群组</a></li>
+        <li><a href="{{group.group_id}}/menbers" class='waves-effect'><i class="material-icons">face</i>成员</a></li>
+        <li><a href="{{group.group_id}}/performance" class='waves-effect'><i class="material-icons">assessment</i>绩效</a>
+        </li>
 
         <li><a class="subheader">Subheader</a></li>
 
@@ -77,10 +82,11 @@
             <div class="nav-wrapper">
                 <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Logo</a>
                 <ul class="right">
+                    <li>当前群组：{{group.name}}</li>
                     <li><a href="sass.html"><i class="material-icons">search</i></a></li>
                     <li><a href="badges.html"><i class="material-icons">view_module</i></a></li>
                     <li><a href="collapsible.html"><i class="material-icons">refresh</i></a></li>
-                    <li><a href="mobile.html"><i class="material-icons">more_vert</i></a></li>
+                    <li><a href="/"><i class="material-icons">home</i></a></li>
                 </ul>
             </div>
         </nav>
@@ -90,7 +96,7 @@
     <div id="modal1" class="modal">
         <div class="modal-content">
             <h4>Modal Header</h4>
-            <form action="/reorder" method="post" autocomplete="off">
+            <form action="{{group.group_id}}/reorder" method="post" autocomplete="off" id=id-newform>
 
                 <div class="modal-box">
                     <i class="small material-icons">alarm</i>
@@ -162,7 +168,7 @@
 
         <div class="todo_container" id='todo-container-3'>
             <h4>紧急3</h4>
-            <form class="" action="/add" method="post" autocomplete="off">
+            <form class="" action="{{group.group_id}}/add" method="post" autocomplete="off">
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="input_text" type="text" data-length="15" name="title" maxlength="15"
@@ -176,7 +182,7 @@
         </div>
         <div class="todo_container" id='todo-container-2'>
             <h4>重要2</h4>
-            <form class="" action="/add" method="post" autocomplete="off">
+            <form class="" action="{{group.group_id}}/add" method="post" autocomplete="off">
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="input_text" type="text" data-length="15" name="title" maxlength="15"
@@ -190,7 +196,7 @@
         </div>
         <div class="todo_container" id='todo-container-1'>
             <h4>不重要1</h4>
-            <form class="" action="/add" method="post" autocomplete="off">
+            <form class="" action="{{group.group_id}}/add" method="post" autocomplete="off">
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="input_text" type="text" data-length="15" name="title" maxlength="15"
@@ -323,7 +329,7 @@
 
         }
         // let todos = undefined 应该没什么用
-        ajax('GET', '/all', null, '', function (r) {
+        ajax('GET', '{{group.group_id}}/all', null, '', function (r) {
             todos = JSON.parse(r.response)
             console.log(typeof (todos))
             inserTodos(todos)

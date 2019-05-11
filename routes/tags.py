@@ -27,7 +27,7 @@ def index():
 @main.route("/all")
 def all():
     u = current_user()
-    list = Tag.getAll(u)
+    list = Tag.getAll(u, None)
     return (list)
 
 @main.route("/add", methods=['POST'])
