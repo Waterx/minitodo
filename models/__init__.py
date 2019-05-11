@@ -18,6 +18,10 @@ class Model():
         for l in t_list:
             td = {}
             # len(cls.__fields__)有多少个属性项
+            # cls.__fields__[i]指的是在fields中每个属性项 ['user_id', 'name', ......]
+            # td[cls.__fields__[i]]指的是返回字典中的键   td[user_id]
+            # l[cls.__fields__[i]]指的是返回字典中的键对应的值 'ee06b5de......'
+            # l[cls.__fields__[i]]的值也可是对象
             for i in range(len(cls.__fields__)):
                 # 如果这个属性是一个类，判断
                 flag1 = isinstance(l[cls.__fields__[i]], Model)
@@ -32,7 +36,7 @@ class Model():
                 if cls.__fields__[i] == 'tag':
                     td[cls.__fields__[i]] = [a.tag_id for a in l[cls.__fields__[i]]]
                 if cls.__fields__[i] == 'users':
-                    td[cls.__fields__[i]] = [a.user_id for a in l[cls.__fields__[i]]]
+                    td[cls.__fields__[i]] = [a.icon for a in l[cls.__fields__[i]]]
 
 
             # td = {'todo_id': l.todo_id,
@@ -43,7 +47,6 @@ class Model():
         print("!!Model dict_all", dict_all)
 
         return json.dumps(dict_all)
-        # return '1'
 
     @classmethod
     def get_one_by(cls, **kwargs):

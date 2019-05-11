@@ -29,12 +29,34 @@ def index():
 def all():
     u = current_user()
     list = Group.getAll(u)
-    return (list)
+    return list
+
+'''得到所有参加的群组'''
+@main.route(("/p_all"))
+def p_all():
+    u = current_user()
+    list = Group.getpall(u)
+    return list
 
 @main.route("/add", methods=['POST'])
 def add():
     form = request.form
-    print('!!tag add form', form)
+    print('!!group add form', form)
     u = current_user()
     g = Group.addGroup(form, u)
     return g
+
+'''用户参加群组'''
+@main.route('/participate', methods=['POST'])
+def participate():
+    form = request.form
+    print("!!group participate form", form)
+    u = current_user()
+    g = Group.participateGroup(form, u)
+    return g
+
+@main.route('/<gid>')
+def detail(gid):
+
+    print(gid)
+    return ''

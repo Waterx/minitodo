@@ -17,6 +17,11 @@
         .groups_container {
             width: 75%;
         }
+
+        .small {
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </head>
 
@@ -77,7 +82,6 @@
         <div class="modal-content">
             <h4>新建群组</h4>
             <form action={{ url_for("groups.add") }} method="post" autocomplete="off" id=id-newform>
-
                 <div class="modal-box">
                     群组名称：
                     <input type="text" id="id-modal-name" name='name' />
@@ -90,30 +94,55 @@
                 </div>
 
         </div>
-
         <div class="modal-footer">
-            <!-- <a href="#!" class=" waves-effect waves-green btn-flat">
-            </a> -->
             <input type="submit" class='modal-close btn' value="保存">
             </form>
+        </div>
+    </div>
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <h4>加入群组</h4>
+            <form action={{ url_for("groups.participate") }} method="post" autocomplete="off" id=id-newform>
+                <div class="modal-box">
+                    群组id：
+                    <input type="text" id="id-modal-id" name='group_id' />
+                    <!-- <input type="hidden" id='hideinput' name='project_id' value="" /> -->
+                </div>
 
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class='modal-close btn' value="加入">
+            </form>
         </div>
     </div>
 
-
     <main>
         <div class="btn_control">
-            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">New</a>
-
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">新建群组</a>
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal2">加入</a>
 
         </div>
 
         <div class="groups_container">
+
+            <!-- <h3>创建的群组：</h3>
             <div class="row">
+                <a href="http://"><div class="col s12" data-id=${groups[i].group_id}>
+                    <div class="card-panel">
+                        <span class="blue-text">群组：测试
+                        </span>
+                        <div class="orange-text">
+                            测试
+                        </div>
+                    </div>
+                </div></a>
+            </div> -->
+
+            <h3>加入的群组：</h3>
+            <div class="row2">
             </div>
 
         </div>
-
 
 
 
@@ -193,16 +222,30 @@
             //错误信息
             console.log("AJAX FAIL")
         });
+        $.ajax({
+            type: 'GET',
+            url: './p_all',
+            success: function (r) {
+                r = JSON.parse(r)
+                log(r)
+                inserGroups2(r)
+            }
+        })
 
         let inserGroups = function (groups) {
             for (let i in groups) {
                 log(i, ':', groups[i])
-
+                let s = ''
+                for (let j in groups[i].users) {
+                    s = s + `<img src="${groups[i].users[j]}" alt="" class='small'>`
+                }
+                // <img src="${groups[i].users[]}" alt="">
                 $('.row').append(
                     `
+                    ${s}
                     <div class="col s12" data-id=${groups[i].group_id}>
-                        <div class="card-panel teal">
-                        <span class="white-text">${groups[i].name}
+                        <div class="card-panel">
+                        <span class="blue-text">群组：${groups[i].name}
                         </span>
                         <div class="orange-text">
                             ${(groups[i].updated_time)}
@@ -215,7 +258,35 @@
                 )
             }
         }
+        let inserGroups2 = function (groups) {
+            for (let i in groups) {
+                log(i, ':', groups[i])
+                let s = ''
+                for (let j in groups[i].users) {
+                    s = s + `<img src="${groups[i].users[j]}" alt="" class='small'>`
+                }
+                $('.row2').append(
+                    `<a href="/groups/${groups[i].group_id}">
+                    <div class="col s12" data-id=${groups[i].group_id}>
 
+                        <div class="card-panel hoverable">
+                                <img src="${groups[i].icon}" alt="" class="circle small">
+
+                        <span class="blue-text">群组：${groups[i].name}
+                        </span>
+                        <span class="right">成员：${s}
+                        </span>
+                        <div class="orange-text">
+                            管理员：${groups[i].admin}
+                        </div>
+                        </div> 
+                    </div></a>
+                    `
+
+                    //<i class="material-icons small-icon left reorderbtn">reorder</i>
+                )
+            }
+        }
 
 
 
