@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>自在Todo</title>
+    <link rel="shortcut icon" href="/static/images/man.png">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="/static/css/materialize.css">
+    <link href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.bootcss.com/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css"
+        rel="stylesheet"> -->
+
+    <link rel="stylesheet" href="/static/css/jquery.datetimepicker.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .project_box {
+            /* border: 1px darkblue solid; */
+            width: 190px;
+            height: 145px;
+            background-image: url(/static/images/tag.png);
+            background-size: 241px 250px;
+            background-position: -28px -51px;
+            display: inline-block;
+            vertical-align: top;
+            position: relative;
+        }
+
+        .task-title {
+            font-size: 16px;
+            line-height: 27px;
+            height: 80px;
+            overflow: hidden;
+            padding: 25px 18px 0;
+            word-break: break-all;
+        }
+
+        .meta-data {
+            position: relative;
+            width: 190px;
+            left: 0px;
+            padding-top: 10px;
+            padding-left: 6px;
+            border-top: 1px dashed #e5e5e5;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+        }
+
+        .meta-data span {
+            float: left;
+            width: 60px;
+            border-left: 1px solid #e5e5e5;
+        }
+
+        .times {
+            display: block;
+            margin: 15px 0;
+            max-width: 40%;
+        }
+
+        /*首先，我们要创建一个容器class*/
+        .times ul {
+            margin-left: 25px;
+            border-left: 2px solid #ddd;
+            list-style-type: none;
+        }
+
+        /*利用ul标签的特性，设置外边框左移25px，左边边框是2px粗的实心线，颜色一般要浅一点*/
+        .times ul li {
+            width: 100%;
+            margin-left: -12px;
+            line-height: 20px;
+            font-weight: narmal;
+        }
+
+        /*一般情况，通过li标签控制圆点回到时间线上，然后控制要出现的文字大小和是否粗体*/
+        .times ul li b {
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border: 2px solid #555;
+            margin: 5px;
+            border-radius: 6px;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            overflow: hidden;
+            display: inline-block;
+            float: left;
+        }
+
+        /*利用处理加粗以外没有其它特别属性b标签做时间轴的圆点。*/
+        .times ul li span {
+            padding-left: 7px;
+            font-size: 12px;
+            line-height: 20px;
+            color: #555;
+        }
+
+        /*设置span标签的属性，让它来做时间显示，加一点边距，使时间显示离时间线远一点*/
+        .times ul li:hover b {
+            border: 2px solid #ff6600;
+        }
+
+        /*注意这一行，前面的li标签后面加了一个:hover伪属性，意思是鼠标移上来，激活后面的属性，这样可以设置鼠标移动到整个时间范围的时候，时间点和时间显示会变色*/
+        .times ul li:hover span {
+            color: #ff6600;
+        }
+
+        /*同上*/
+        .times ul li p {
+            padding-left: 15px;
+            font-size: 14px;
+            line-height: 25px;
+        }
+
+        /*这里利用段落标签p做文字介绍*/
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        .delbtn {
+            position: absolute;
+            left: 160px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- <div class="progress hide jindutiao">
+        <div class="indeterminate"></div>
+    </div> -->
+
+    <!-- 左侧边栏 -->
+    <ul class="sidenav sidenav-fixed">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <img src="/static/images/moutain2.jpg">
+                </div>
+                <a href="#user"><img class="circle" src="{{ user.icon }}">
+                    <img class="circle" src="{{ group.icon }}" style="
+                    position: absolute;
+                    left: 120px;
+                    top: 32px;
+                "></a>
+                <a href="#name"><span class="white-text name">{{ user.name }}</span></a>
+                <a href="#email"><span class="white-text email">{{ user.email }}</span></a>
+            </div>
+        </li>
+        <li><a href="." class='waves-effect'><i class="material-icons">done_all</i>任务<span
+                    class="new badge red todobadge" data-badge-caption="todo">0</span></a></li>
+        <li><a href="./projects" class='waves-effect'><i class="material-icons">folder</i>项目</a></li>
+        <li><a href="./tags" class='waves-effect'><i class="material-icons">bookmark</i>标签</a></li>
+        <li><a href="./notes" class='waves-effect'><i class="material-icons">receipt</i>便签</a></li>
+
+
+        <li>
+            <div class="divider"></div>
+        </li>
+
+
+        <li><a href="/groups" class='waves-effect'><i class="material-icons">group</i>群组</a></li>
+        <li><a href="./menbers" class='waves-effect'><i class="material-icons">face</i>成员</a></li>
+        <li><a href="./performance" class='waves-effect'><i class="material-icons">assessment</i>绩效</a>
+        </li>
+
+        <li><a class="subheader">Subheader</a></li>
+
+        <li class='margin-bottom'><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+    </ul>
+
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Logo</a>
+                <ul class="right">
+                    <li>当前群组：{{group.name}}</li>
+                    <li><a href="sass.html"><i class="material-icons">search</i></a></li>
+                    <li><a href="badges.html"><i class="material-icons">view_module</i></a></li>
+                    <li><a href="collapsible.html"><i class="material-icons">refresh</i></a></li>
+                    <li><a href="/"><i class="material-icons">home</i></a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!-- 弹出来的详细编辑页 -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>新建标签</h4>
+            <form action="./tags/add" method="post" autocomplete="off" id=id-newform>
+
+                <div class="modal-box">
+                    标签名称：
+                    <input type="text" id="id-modal-title" name='title' />
+                    <!-- <input type="hidden" id='hideinput' name='project_id' value="" /> -->
+                </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <!-- <a href="#!" class=" waves-effect waves-green btn-flat">
+            </a> -->
+            <input type="submit" class='modal-close btn' value="保存">
+            </form>
+
+        </div>
+    </div>
+
+
+    <main>
+        <div class="btn_control">
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">New</a>
+
+
+        </div>
+
+        <div class="tags_container">
+
+        </div>
+
+        <div class="chip">
+            Tag
+            <i class="close material-icons">close</i>
+        </div>
+
+        <div class="times">
+            <ul class="timesul">
+
+                <!--b标签不输入内容，span标签内输入时间不限制格式，p标签内输入介绍内容。注意，标签内不能使用div分割-->
+            </ul>
+        </div>
+
+
+
+
+    </main>
+
+
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        M.AutoInit();
+        $(document).ready(function () {
+            $('.sidenav').sidenav();
+            $('input#input_text').characterCounter();
+
+            $("#id-newform").submit(function (e) {
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var form = $(this);
+                var url = form.attr('action');
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(), // serializes the form's elements.
+                    success: function (data) {
+                        tags = JSON.parse(data)
+                        $('#id-modal-title').val("");
+                        log(tags); // show response from the script.
+                        $('.tags_container').append(
+                            `
+                            <div class="project_box" data-id='${tags.tag_id}'>
+                            <a class="delbtn btn-floating btn-small waves-effect waves-light red"><i class="material-icons">clear</i></a>
+
+                            <div class="task-title">${tags.title}</div>
+                            <div class="meta-data">
+                            <span class="task-count">
+                                0<br>总任务
+                            </span>
+                            <span>
+                                0<br>已完成
+                            </span>
+                            <span>
+                                0%<br>进度
+                            </span>
+                            </div>
+                            </div>
+                            `
+
+                            //<i class="material-icons small-icon left reorderbtn">reorder</i>
+                        )
+                    }
+                });
+            });
+        });
+        var log = function () {
+            console.log.apply(console, arguments)
+        }
+
+        //普通表单
+        $.ajax({
+            type: 'GET',
+            url: './tags/all',
+            success: function (r) {
+                r = JSON.parse(r)
+                log(r)
+                inserTags(r)
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            //错误信息
+            console.log("AJAX FAIL")
+        });
+
+        let inserTags = function (tags) {
+            for (let i in tags) {
+                log(i, ':', tags[i])
+
+                $('.tags_container').append(
+                    `
+                    <div class="project_box" data-id='${tags[i].tag_id}'>
+                    <a class="delbtn btn-floating btn-small waves-effect waves-light red"><i class="material-icons">clear</i></a>
+
+                    <div class="task-title">${tags[i].title}</div>
+                    <div class="meta-data">
+                    <span class="task-count">
+                        0<br>总任务
+                    </span>
+                    <span>
+                        0<br>已完成
+                    </span>
+                    <span>
+                        0%<br>进度
+                    </span>
+                    </div>
+                    </div>
+                    `
+
+                    //<i class="material-icons small-icon left reorderbtn">reorder</i>
+                )
+            }
+        }
+
+
+
+
+    </script>
+    <script>
+        $('.tags_container').click(function (event) {
+            target = event.target;
+            tag_id = $(target).parents("div").attr('data-id');
+            console.log(tag_id)
+            // 请求时间轴
+            $.ajax({
+                type: 'POST',
+                url: '/tags/gettodointag',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    'tag_id': tag_id,
+                }),
+                success: function (r) {
+                    console.log(r)
+                    $('.timesul').empty()
+                    for (let i in r) {
+                        todos = r
+                        console.log(i)
+                        $('.timesul').append(
+                            //TODO：check功能没实现
+                            `
+                        <li><b></b><span>${todos[i].updated_time}</span>
+                        <div class="todo_cell row item card-panel hoverable" data-id="${todos[i].todo_id}">
+                        <span>
+                            <label>
+                                <input class="checkbox" type="checkbox"  />
+                                <span class="todo_title">${todos[i].title}</span>
+                            </label>
+                        </span>
+                        </li>
+                        `
+                        )
+                    }
+
+
+
+                }
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                //错误信息
+                console.log("AJAX FAIL")
+            });
+
+            //如果点击到删除按钮
+            if (target.classList.contains('material-icons')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/tags/delete',
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({
+                        'tag_id': tag_id,
+                    }),
+                    success: function (r) {
+                        console.log(r)
+                        t = `[data-id='${tag_id}']`
+                        $(t).remove()
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    //错误信息
+                    console.log("AJAX FAIL")
+                });
+            }
+
+        })
+    </script>
+</body>
+
+</html>
