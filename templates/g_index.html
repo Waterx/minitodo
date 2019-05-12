@@ -55,11 +55,11 @@
                 <a href="#email"><span class="white-text email">{{ user.email }}</span></a>
             </div>
         </li>
-        <li><a href="{{group.group_id}}" class='waves-effect'><i class="material-icons">done_all</i>任务<span
+        <li><a href="." class='waves-effect'><i class="material-icons">done_all</i>任务<span
                     class="new badge red todobadge" data-badge-caption="todo">0</span></a></li>
-        <li><a href="{{group.group_id}}/projects" class='waves-effect'><i class="material-icons">folder</i>项目</a></li>
-        <li><a href="{{group.group_id}}/tags" class='waves-effect'><i class="material-icons">bookmark</i>标签</a></li>
-        <li><a href="{{group.group_id}}/notes" class='waves-effect'><i class="material-icons">receipt</i>便签</a></li>
+        <li><a href="./projects" class='waves-effect'><i class="material-icons">folder</i>项目</a></li>
+        <li><a href="./tags" class='waves-effect'><i class="material-icons">bookmark</i>标签</a></li>
+        <li><a href="./notes" class='waves-effect'><i class="material-icons">receipt</i>便签</a></li>
 
 
         <li>
@@ -67,9 +67,9 @@
         </li>
 
 
-        <li><a href="{{group.group_id}}/groups" class='waves-effect'><i class="material-icons">group</i>群组</a></li>
-        <li><a href="{{group.group_id}}/menbers" class='waves-effect'><i class="material-icons">face</i>成员</a></li>
-        <li><a href="{{group.group_id}}/performance" class='waves-effect'><i class="material-icons">assessment</i>绩效</a>
+        <li><a href="/groups" class='waves-effect'><i class="material-icons">group</i>群组</a></li>
+        <li><a href="./menbers" class='waves-effect'><i class="material-icons">face</i>成员</a></li>
+        <li><a href="./performance" class='waves-effect'><i class="material-icons">assessment</i>绩效</a>
         </li>
 
         <li><a class="subheader">Subheader</a></li>
@@ -96,7 +96,7 @@
     <div id="modal1" class="modal">
         <div class="modal-content">
             <h4>Modal Header</h4>
-            <form action="{{group.group_id}}/reorder" method="post" autocomplete="off" id=id-newform>
+            <form action="./reorder" method="post" autocomplete="off" id=id-newform>
 
                 <div class="modal-box">
                     <i class="small material-icons">alarm</i>
@@ -329,7 +329,7 @@
 
         }
         // let todos = undefined 应该没什么用
-        ajax('GET', '{{group.group_id}}/all', null, '', function (r) {
+        ajax('GET', './all', null, '', function (r) {
             todos = JSON.parse(r.response)
             console.log(typeof (todos))
             inserTodos(todos)
@@ -349,7 +349,7 @@
         }
         $.ajax({
             type: 'GET',
-            url: '/projects/all',
+            url: './projects/all',
             success: function (r) {
                 r = JSON.parse(r)
                 console.log(r)
@@ -375,7 +375,7 @@
         }
         $.ajax({
             type: 'GET',
-            url: '/tags/all',
+            url: './tags/all',
             success: function (r) {
                 r = JSON.parse(r)
                 console.log(r)

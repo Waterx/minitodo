@@ -36,6 +36,9 @@ class Model():
                     if cls.__fields__[i] == 'project':
                         # l[cls.__fields__[i]]是一个Project object
                         td[cls.__fields__[i]] = l[cls.__fields__[i]].project_id
+                    if cls.__fields__[i] == 'group':
+                        td[cls.__fields__[i]] = l[cls.__fields__[i]].group_id
+
 
                 if cls.__fields__[i] == 'tag':
                     td[cls.__fields__[i]] = [a.tag_id for a in l[cls.__fields__[i]]]

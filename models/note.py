@@ -4,19 +4,22 @@ import uuid
 import json
 from models import Model
 from models.user import User
+from models.group import Group
 
 class Note(Document, Model):
     __fields__ = [
         'note_id',
         'title',
         'updated_time',
-        'user'
+        'user',
+        'group'
     ]
 
     note_id = StringField(required=True)
     title = StringField(max_length=40)
     updated_time = IntField()
     user = ReferenceField(User)
+    group = ReferenceField(Group)
 
     @classmethod
     def inserNote(cls, form, u):

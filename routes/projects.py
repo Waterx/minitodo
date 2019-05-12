@@ -37,7 +37,7 @@ def add():
     print('!!project add form', form)
     # ImmutableMultiDict([('title', '的撒发射点法大师傅大师傅')])
     u = current_user()
-    t = Project.inserProject(form, u)
+    t = Project.inserProject(form, u, None)
     return t
 
 '''本函数注意在删除项目的时候，项目内todo也全部删除'''

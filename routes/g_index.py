@@ -16,6 +16,7 @@ from utils import log
 main = Blueprint('g_index', __name__)
 
 @main.route('/<gid>')
+@main.route('/<gid>/')
 def index(gid):
     u = current_user()
     g = Group.get_one_by(group_id=gid)

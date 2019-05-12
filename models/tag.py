@@ -4,7 +4,7 @@ import uuid
 import json
 from models import Model
 from models.user import User
-
+from models.group import Group
 
 class Tag(Document, Model):
     __fields__ = [
@@ -12,12 +12,14 @@ class Tag(Document, Model):
         'title',
         'updated_time',
         'user',
+        'group'
     ]
 
     tag_id = StringField(required=True)
     title = StringField(max_length=20)
     updated_time = IntField()
     user = ReferenceField(User)
+    group = ReferenceField(Group)
 
     @classmethod
     def inserTag(cls, form, u):

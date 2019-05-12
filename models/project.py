@@ -4,7 +4,7 @@ import uuid
 import json
 from models import Model
 from models.user import User
-
+from models.group import Group
 
 class Project(Document, Model):
 
@@ -14,7 +14,8 @@ class Project(Document, Model):
         'done',
         'intro',
         'updated_time',
-        'user'
+        'user',
+        'group'
     ]
 
     project_id = StringField(required=True)
@@ -23,10 +24,10 @@ class Project(Document, Model):
     intro = StringField(max_length=50)
     updated_time = IntField()
     user = ReferenceField(User)
-
+    group = ReferenceField(Group)
 
     @classmethod
-    def inserProject(cls, form, u):
+    def inserProject(cls, form, u, g):
         t = Project(
             title=form.get('title', ''),
             intro=form.get('intro', ''),
@@ -34,6 +35,7 @@ class Project(Document, Model):
             project_id=str(uuid.uuid1()),
             updated_time=int(time.time()),
             user=u,
+            group=g
         )
         t.save()
         print('model project insert', t.title, t.intro)
