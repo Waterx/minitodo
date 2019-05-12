@@ -28,6 +28,7 @@ from routes.groups import main as groups_routes
 from routes.g_index import main as g_index_routes
 from routes.g_projects import main as g_projects_routes
 from routes.g_tags import main as g_tags_routes
+from routes.g_notes import main as g_notes_routes
 # from routes.mail import main as mail_routes
 app.register_blueprint(index_routes)
 app.register_blueprint(projects_routes, url_prefix='/projects')
@@ -38,6 +39,7 @@ app.register_blueprint(groups_routes, url_prefix='/groups')
 app.register_blueprint(g_index_routes, url_prefix='/groups')
 app.register_blueprint(g_projects_routes, url_prefix='/groups')
 app.register_blueprint(g_tags_routes, url_prefix='/groups')
+app.register_blueprint(g_notes_routes, url_prefix='/groups')
 
 # app.register_blueprint(reply_routes, url_prefix='/reply')
 # app.register_blueprint(board_routes, url_prefix='/board')

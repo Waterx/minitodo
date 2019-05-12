@@ -36,7 +36,7 @@ def add():
     form = request.form
     print('!!note add form', form)
     u = current_user()
-    t = Note.inserNote(form, u)
+    t = Note.inserNote(form, u, None)
     return t
 
 @main.route("/delete", methods=['POST'])

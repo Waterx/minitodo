@@ -22,12 +22,13 @@ class Note(Document, Model):
     group = ReferenceField(Group)
 
     @classmethod
-    def inserNote(cls, form, u):
+    def inserNote(cls, form, u, g):
         t = Note(
             title=form.get('title', ''),
             note_id=str(uuid.uuid1()),
             updated_time=int(time.time()),
-            user=u
+            user=u,
+            group=g
         )
         t.save()
         print('model Note insert', t.title)
