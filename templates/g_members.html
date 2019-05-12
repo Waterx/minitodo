@@ -17,6 +17,10 @@
         .notes_container {
             width: 75%;
         }
+
+        .members_container {
+            width: 75%;
+        }
     </style>
 </head>
 
@@ -106,7 +110,7 @@
 
     <main>
         <div class="btn_control">
-            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">New</a>
+            <a class="waves-effect waves-light btn modal-trigger disabled" href="#modal1">New</a>
 
         </div>
 
@@ -116,7 +120,9 @@
 
         </div>
 
+        <ul class="collection members_container">
 
+        </ul>
 
 
 
@@ -185,32 +191,31 @@
         //普通表单
         $.ajax({
             type: 'GET',
-            url: './notes/all',
+            url: './members/all',
             success: function (r) {
                 r = JSON.parse(r)
                 log(r)
-                inserNotes(r)
+                inserMembers(r)
             }
         }).fail(function (jqXHR, textStatus, errorThrown) {
             //错误信息
             console.log("AJAX FAIL")
         });
 
-        let inserNotes = function (notes) {
-            for (let i in notes) {
-                log(i, ':', notes[i])
+        let inserMembers = function (members) {
+            for (let i in members) {
+                log(i, ':', members[i])
 
-                $('.row').append(
+                $('.members_container').append(
                     `
-                    <div class="col s3" data-id=${notes[i].note_id}>
-                        <div class="card-panel teal">
-                        <span class="white-text">${notes[i].title}
-                        </span>
-                        <div class="orange-text">
-                            ${(notes[i].updated_time)}
-                        </div>
-                        </div> 
-                    </div>
+                    <li class="collection-item avatar">
+                    <img src="${members[i].icon}" alt="" class="circle">
+                    <span class="title">${members[i].name}</span>
+                    <p>${members[i].email} <br>
+                        ${members[i].email}
+                    </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                    </li>
                     `
 
                     //<i class="material-icons small-icon left reorderbtn">reorder</i>
