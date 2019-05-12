@@ -35,7 +35,7 @@ def add():
     form = request.form
     print('!!tag add form', form)
     u = current_user()
-    t = Tag.inserTag(form, u)
+    t = Tag.inserTag(form, u, None)
     return t
 
 '''本函数注意在删除tag的时候，包含tag的todo只删除tag字段'''

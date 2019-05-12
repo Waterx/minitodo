@@ -407,7 +407,7 @@
             if (target.classList.contains('material-icons')) {
                 $.ajax({
                     type: 'POST',
-                    url: './delete',
+                    url: '/projects/delete',
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify({
@@ -417,6 +417,7 @@
                         console.log(r)
                         t = `[data-id='${project_id}']`
                         $(t).remove()
+
                     }
                 }).fail(function (jqXHR, textStatus, errorThrown) {
                     //错误信息

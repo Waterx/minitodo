@@ -22,12 +22,13 @@ class Tag(Document, Model):
     group = ReferenceField(Group)
 
     @classmethod
-    def inserTag(cls, form, u):
+    def inserTag(cls, form, u, g):
         t = Tag(
             title=form.get('title', ''),
             tag_id=str(uuid.uuid1()),
             updated_time=int(time.time()),
             user=u,
+            group=g
         )
         t.save()
         print('model Tag insert', t.title)
