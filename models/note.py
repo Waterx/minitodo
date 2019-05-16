@@ -16,7 +16,7 @@ class Note(Document, Model):
     ]
 
     note_id = StringField(required=True)
-    title = StringField(max_length=40)
+    title = StringField(max_length=70)
     updated_time = IntField()
     user = ReferenceField(User)
     group = ReferenceField(Group)

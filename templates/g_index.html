@@ -410,7 +410,7 @@
                     'todo_id': todo_id,
                 }
                 data = JSON.stringify(data)
-                ajax('POST', '/check', null, data, function (r) {
+                ajax('POST', './check', null, data, function (r) {
                     check = JSON.parse(r.response)
                     console.log(check)
                     // setTimeout($('.progress').addClass('hide'), 1000000)

@@ -29,6 +29,14 @@ def all(gid):
     t_list = Todo.getAll(None, g)
     return (t_list)
 
+@main.route("/<gid>/check", methods=['POST'])
+def check(gid):
+    json = request.get_json()
+    g = Group.get_one_by(group_id=gid)
+    print('!!check json', json)
+    u = current_user()
+    result_id = Todo.toggleTodoGroup(json, u, g)
+    return result_id
 
 @main.route("/<gid>/add", methods=['POST'])
 def add(gid):

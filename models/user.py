@@ -13,6 +13,7 @@ class User(Document, Model):
         'password'
         'updated_time',
         'icon',
+        'performance'
 
         # 'user'
     ]
@@ -23,6 +24,7 @@ class User(Document, Model):
     password = StringField(required=True, max_length=100)
     icon = StringField(max_length=100)
     updated_time = IntField()
+    performance = IntField()
 
 
     def salted_password(pwd):
@@ -71,7 +73,8 @@ class User(Document, Model):
                 user_id=str(uuid.uuid1()),
                 updated_time=int(time.time()),
                 icon='/static/images/cat.jpg',
-                password=User.salted_password(pwd)
+                password=User.salted_password(pwd),
+                performance=0
             )
             t.save()
             return t

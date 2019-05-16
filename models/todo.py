@@ -119,6 +119,20 @@ class Todo(Document, Model):
         result = json.dumps(t.todo_id)
         return result
 
+    '''这个还不完善，因为一个人的在所有组的绩效都算在了一起'''
+    @classmethod
+    def toggleTodoGroup(cls, form, u, g):
+        t = None
+        tid = form['todo_id']
+        print('model toggletodo', 'tid', tid)
+        t = Todo.get_one_by(todo_id=tid)
+        t.done = True
+        t.save()
+        u.performance = u.performance + 1
+        u.save()
+        result = json.dumps(t.todo_id)
+        return result
+
     @classmethod
     def editTodo(cls, form):
         tid = form['todo_id']

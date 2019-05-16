@@ -30,7 +30,8 @@ from routes.g_projects import main as g_projects_routes
 from routes.g_tags import main as g_tags_routes
 from routes.g_notes import main as g_notes_routes
 from routes.g_members import main as g_members_routes
-# from routes.mail import main as mail_routes
+from routes.g_performance import main as g_performance_routes
+
 app.register_blueprint(index_routes)
 app.register_blueprint(projects_routes, url_prefix='/projects')
 app.register_blueprint(tags_routes, url_prefix='/tags')
@@ -42,7 +43,7 @@ app.register_blueprint(g_projects_routes, url_prefix='/groups')
 app.register_blueprint(g_tags_routes, url_prefix='/groups')
 app.register_blueprint(g_notes_routes, url_prefix='/groups')
 app.register_blueprint(g_members_routes, url_prefix='/groups')
-
+app.register_blueprint(g_performance_routes, url_prefix='/groups')
 # app.register_blueprint(reply_routes, url_prefix='/reply')
 # app.register_blueprint(board_routes, url_prefix='/board')
 # app.register_blueprint(mail_routes, url_prefix='/mail')
