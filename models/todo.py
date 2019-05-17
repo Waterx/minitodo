@@ -71,9 +71,10 @@ class Todo(Document, Model):
         print('!!model reorder', t.dead_line)
         t.rank = form.get('rank', 3)
         print('!!model reorder', t.rank)
-        pid = form.get('project')
+        pid = form.get('project','')
         t.project = Project.get_one_by(project_id=pid)
-
+        if len(pid) > 10:
+            ttt = Todo.calProject(pid)
         # 注意getlist可以得到重复的键对应的值并生成列表
         print('!!model reorder tag', form.getlist('tag'))
         tagidlist = form.getlist('tag')
@@ -116,6 +117,7 @@ class Todo(Document, Model):
         td = t.done
         t.done = not td
         t.save()
+        ttt = Todo.calProject(t.project.project_id)
         result = json.dumps(t.todo_id)
         return result
 
@@ -186,6 +188,19 @@ class Todo(Document, Model):
         print('!!model todo gettodobytag list', list)
         return json.dumps(list)
 
+    @classmethod
+    def calProject(cls, pid):
+        p = Project.get_one_by(project_id=pid)
+        tlist = Todo.objects(project=p)
+        tt = 0
+        dt = 0
+        for t in tlist:
+            tt = tt + 1
+            if t.done is True:
+                dt = dt + 1
+        p.totaltodo = tt
+        p.donetodo = dt
+        p.save()
 
 
 

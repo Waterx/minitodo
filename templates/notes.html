@@ -43,19 +43,25 @@
         <li><a href="/projects" class='waves-effect'><i class="material-icons">folder</i>项目</a></li>
         <li><a href="/tags" class='waves-effect'><i class="material-icons">bookmark</i>标签</a></li>
         <li><a href="/notes" class='waves-effect'><i class="material-icons">receipt</i>便签</a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
 
+
+        <li><a href="/groups" class='waves-effect'><i class="material-icons">group</i>群组</a></li>
+        <li><a href="/friend" class='waves-effect'><i class="material-icons">email</i>消息</a></li>
+
+        <li><a class="subheader"></a></li>
+        <li><a class="subheader"></a></li>
+        <li><a class="subheader"></a></li>
 
         <li>
             <div class="divider"></div>
         </li>
-        <li><a href="/groups" class='waves-effect'><i class="material-icons">group</i>群组</a></li>
-        <li><a class="subheader">Subheader</a></li>
-
-        <li><a class="subheader">Subheader</a></li>
-
-        <li><a class="subheader">Subheader</a></li>
-
-        <li class='margin-bottom'><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+        <li><a href="/setting" class='waves-effect'><i class="material-icons">build</i>设置</a></li>
+        <li>
+            <div class="divider"></div>
+        </li>
     </ul>
 
     <div class="navbar-fixed">
@@ -63,10 +69,11 @@
             <div class="nav-wrapper">
                 <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Logo</a>
                 <ul class="right">
+                    <li>当前：个人工作空间</li>
                     <li><a href="sass.html"><i class="material-icons">search</i></a></li>
                     <li><a href="badges.html"><i class="material-icons">view_module</i></a></li>
                     <li><a href="collapsible.html"><i class="material-icons">refresh</i></a></li>
-                    <li><a href="mobile.html"><i class="material-icons">more_vert</i></a></li>
+                    <li><a href="mobile.html"><i class="material-icons">power_settings_new</i></a></li>
                 </ul>
             </div>
         </nav>
@@ -156,20 +163,12 @@
         var log = function () {
             console.log.apply(console, arguments)
         }
-        var timetodatem = function (unixtime) {
+        let timetodatem = function (unixtime) {
             let date = new Date(unixtime * 1000);
-            Y = date.getFullYear() + '-';
-            M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-            D = date.getDate() + ' ';
-            h = date.getHours() + ':';
-            m = date.getMinutes() + ':';
-            s = date.getSeconds();
-            ttt = Y + M + D + h + m + s;
             // 简便方法
-            // t2 = date.toLocaleString();
-            // log(t2);
-            console.log(Y + M + D + h + m + s);
-            return ttt;
+            t2 = date.toLocaleString();
+            log(t2);
+            return t2;
         }
 
 
@@ -199,7 +198,7 @@
                         <span class="white-text">${notes[i].title}
                         </span>
                         <div class="orange-text">
-                            ${(notes[i].updated_time)}
+                            ${timetodatem(notes[i].updated_time)}
                         </div>
                         </div> 
                     </div>

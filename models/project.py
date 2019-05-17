@@ -15,7 +15,9 @@ class Project(Document, Model):
         'intro',
         'updated_time',
         'user',
-        'group'
+        'group',
+        'totaltodo',
+        'donetodo'
     ]
 
     project_id = StringField(required=True)
@@ -25,6 +27,8 @@ class Project(Document, Model):
     updated_time = IntField()
     user = ReferenceField(User)
     group = ReferenceField(Group)
+    totaltodo = IntField()
+    donetodo = IntField()
 
     @classmethod
     def inserProject(cls, form, u, g):
@@ -35,7 +39,9 @@ class Project(Document, Model):
             project_id=str(uuid.uuid1()),
             updated_time=int(time.time()),
             user=u,
-            group=g
+            group=g,
+            totaltodo=0,
+            donetodo=0
         )
         t.save()
         print('model project insert', t.title, t.intro)
@@ -55,3 +61,5 @@ class Project(Document, Model):
         if flag != 1:
             return 'wrong delete'
         return json.dumps(flag)
+
+

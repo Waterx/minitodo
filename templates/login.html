@@ -6,44 +6,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="/static/css/materialize.css">
+    <link href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url(/static/images/d17f13e831d8ce3b34e0514c24f7ed7aff40a2ef99fdeda3ab05ca95f85f23ed.jpg) no-repeat;
+            background-size: 100%;
+        }
+
+        .loginbox {
+            width: 25%;
+            left: 60%;
+            position: relative;
+            top: 100px;
+        }
+
+        .boxx {
+            border: 2px solid black;
+        }
+
+        .t_slogan {
+            position: absolute;
+            top: 140px;
+            left: 180px;
+        }
+
+        .t_slogan b {
+            font-size: 50px;
+            color: white;
+            letter-spacing: 5px;
+        }
+
+        .t_slogan span {
+            font-size: 18px;
+            color: whitesmoke;
+            line-height: 50px;
+            padding-left: 5px;
+        }
+
+        .btn {
+            width: 100px;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>当前用户：{{ user }}///当前账号：{{ user.email }}</h1>
-    <form class=" form-horizontal" method="post" action="{{ url_for('.register') }}">
-        <div class="control-group">
-            <label class="control-label">用户名</label>
-            <div class="controls">
-                <input type="text" class="input-xlarge" name="email">
-            </div>
+    <div class="t_slogan">
+        <b>自在Todo 轻松生活</b>
+        <br>
+        <span>跟上时间的步伐 做时间的主人</span>
+    </div>
+    <div class="card-panel white hoverable loginbox">
+        <!-- <h4>当前用户：{{ user }}///当前账号：{{ user.email }}</h4> -->
+        <h4>欢迎，请登录</h4>
+        <div class="box">
+            <form class="" method="post" action="{{ url_for('.login') }}">
+                <label for="email">账号Email</label>
+                <input type="text" class="" name="email" id=email>
+
+                <label for="psw">密码</label>
+                <input type="password" class="" name="password" id=psw>
+
+                <input type="submit" class="btn" value="登录">
+                <a href="/register"><input type="" class="btn red" value="注册"></a>
+            </form>
         </div>
-        <div class="control-group">
-            <label class="control-label">密码</label>
-            <div class="controls">
-                <input type="text" class="input-xlarge" name="password">
-            </div>
-        </div>
-        <div class="form-actions">
-            <input type="submit" class="span-primary" value="注册">
-        </div>
-    </form>
-    <form class="form-horizontal" method="post" action="{{ url_for('.login') }}">
-        <div class="control-group">
-            <label class="control-label">用户名</label>
-            <div class="controls">
-                <input type="text" class="input-xlarge" name="email">
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">密码</label>
-            <div class="controls">
-                <input type="text" class="input-xlarge" name="password">
-            </div>
-        </div>
-        <div class="form-actions">
-            <input type="submit" class="span-primary" value="登录">
-        </div>
-    </form>
+
+    </div>
 </body>
 
 </html>
