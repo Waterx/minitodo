@@ -14,10 +14,6 @@
     <link rel="stylesheet" href="/static/css/jquery.datetimepicker.css">
     <link rel="stylesheet" href="/static/css/style.css">
     <style>
-        .notes_container {
-            width: 75%;
-        }
-
         .members_container {
             width: 75%;
         }
@@ -35,34 +31,27 @@
         <li>
             <div class="user-view">
                 <div class="background">
-                    <img src="/static/images/moutain2.jpg">
+                    <img src="/static/images/moutain.jpg">
                 </div>
-                <a href="#user"><img class="circle" src="{{ user.icon }}">
-                    <img class="circle" src="{{ group.icon }}" style="
-                    position: absolute;
-                    left: 120px;
-                    top: 32px;
-                "></a>
+                <a href="#user"><img class="circle" src="{{ user.icon }}"></a>
                 <a href="#name"><span class="white-text name">{{ user.name }}</span></a>
                 <a href="#email"><span class="white-text email">{{ user.email }}</span></a>
             </div>
         </li>
-        <li><a href="." class='waves-effect'><i class="material-icons">done_all</i>任务<span
+        <li><a href="/" class='waves-effect'><i class="material-icons">done_all</i>任务<span
                     class="new badge red todobadge" data-badge-caption="todo">0</span></a></li>
-        <li><a href="./projects" class='waves-effect'><i class="material-icons">folder</i>项目</a></li>
-        <li><a href="./tags" class='waves-effect'><i class="material-icons">bookmark</i>标签</a></li>
-        <li><a href="./notes" class='waves-effect'><i class="material-icons">receipt</i>便签</a></li>
+        <li><a href="/projects" class='waves-effect'><i class="material-icons">folder</i>项目</a></li>
+        <li><a href="/tags" class='waves-effect'><i class="material-icons">bookmark</i>标签</a></li>
+        <li><a href="/notes" class='waves-effect'><i class="material-icons">receipt</i>便签</a></li>
 
 
         <li>
             <div class="divider"></div>
         </li>
-
-
         <li><a href="/groups" class='waves-effect'><i class="material-icons">group</i>群组</a></li>
-        <li><a href="./members" class='waves-effect'><i class="material-icons">face</i>成员</a></li>
-        <li><a href="./performance" class='waves-effect'><i class="material-icons">assessment</i>绩效</a>
-        </li>
+        <li><a class="subheader">Subheader</a></li>
+
+        <li><a class="subheader">Subheader</a></li>
 
         <li><a class="subheader">Subheader</a></li>
 
@@ -74,11 +63,10 @@
             <div class="nav-wrapper">
                 <a href="#!" class="brand-logo"><i class="material-icons">cloud</i>Logo</a>
                 <ul class="right">
-                    <li>当前群组：{{group.name}}</li>
                     <li><a href="sass.html"><i class="material-icons">search</i></a></li>
                     <li><a href="badges.html"><i class="material-icons">view_module</i></a></li>
                     <li><a href="collapsible.html"><i class="material-icons">refresh</i></a></li>
-                    <li><a href="/"><i class="material-icons">home</i></a></li>
+                    <li><a href="mobile.html"><i class="material-icons">more_vert</i></a></li>
                 </ul>
             </div>
         </nav>
@@ -87,12 +75,12 @@
     <!-- 弹出来的详细编辑页 -->
     <div id="modal1" class="modal">
         <div class="modal-content">
-            <h4>新建便签Note</h4>
-            <form action="./notes/add" method="post" autocomplete="off" id=id-newform>
+            <h4>新加好友</h4>
+            <form action='{{ url_for("friend.add") }}' method="post" autocomplete="off">
 
                 <div class="modal-box">
-                    便签内容：
-                    <input type="text" id="id-modal-title" name='title' />
+                    用户账号：
+                    <input type="text" id="id-modal-title" name='email' />
                     <!-- <input type="hidden" id='hideinput' name='project_id' value="" /> -->
                 </div>
 
@@ -101,28 +89,54 @@
         <div class="modal-footer">
             <!-- <a href="#!" class=" waves-effect waves-green btn-flat">
             </a> -->
-            <input type="submit" class='modal-close btn' value="保存">
+            <input type="submit" class='modal-close btn' value="添加">
+            </form>
+
+        </div>
+    </div>
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <h4>聊天</h4>
+            <div class="collection chat_container">
+
+            </div>
+
+            <form action='{{ url_for("friend.chat") }}' method="post" autocomplete="off" id=id-newform>
+
+                <div class="modal-box">
+                    发送消息：
+                    <input type="text" id="id-modal-title2" name='title' />
+                    <input id="id-modal-userto" name='userto' value="3333" type="hidden" />
+
+                    <!-- <input type="hidden" id='hideinput' name='project_id' value="" /> -->
+                </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <!-- <a href="#!" class=" waves-effect waves-green btn-flat">
+            </a> -->
+            <input type="submit" class='btn' value="发送">
             </form>
 
         </div>
     </div>
 
 
+
     <main>
         <div class="btn_control">
-            <a class="waves-effect waves-light btn modal-trigger disabled" href="#modal1">New</a>
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">添加好友</a>
 
-        </div>
-
-        <div class="notes_container">
-            <div class="row">
-            </div>
 
         </div>
 
         <ul class="collection members_container">
 
         </ul>
+
+
 
 
 
@@ -136,6 +150,7 @@
         $(document).ready(function () {
             $('.sidenav').sidenav();
             $('input#input_text').characterCounter();
+
             $("#id-newform").submit(function (e) {
                 e.preventDefault(); // avoid to execute the actual submit of the form.
                 var form = $(this);
@@ -145,21 +160,12 @@
                     url: url,
                     data: form.serialize(), // serializes the form's elements.
                     success: function (data) {
-                        notes = JSON.parse(data)
-                        $('#id-modal-title').val("");
-                        log(notes); // show response from the script.
-                        $('.row').append(
+                        m = JSON.parse(data)
+                        $('#id-modal-title2').val("");
+                        log(m); // show response from the script.
+                        $('.chat_container').append(
                             `
-                            <div class="col s3" data-id=${notes.note_id}>
-                            <div class="card-panel teal">
-                            <span class="white-text">${notes.title}
-                            </span>
-                            <div class="card-action orange-text">
-                            ${notes.updated_time}
-                            </div>
-                            </div>
-                            
-                            </div>
+                            <a href="#!" class="collection-item blue-text">${m.updated_time}@${m.title}</a>
                             `
                         )
                     }
@@ -190,7 +196,7 @@
         //普通表单
         $.ajax({
             type: 'GET',
-            url: './members/all',
+            url: './all',
             success: function (r) {
                 r = JSON.parse(r)
                 log(r)
@@ -207,13 +213,12 @@
 
                 $('.members_container').append(
                     `
-                    <li class="collection-item avatar">
+                    <li class="collection-item avatar" data-id=${members[i].user_id}>
                     <img src="${members[i].icon}" alt="" class="circle">
                     <span class="title">${members[i].name}</span>
                     <p>${members[i].email} <br>
-                        ${members[i].email}
                     </p>
-                    <a href="#!" class="secondary-content waves-effect waves-green btn">清退</a>
+                    <a class="waves-effect waves-light btn modal-trigger" href="#modal2">发消息</a>
                     </li>
                     `
 
@@ -227,24 +232,47 @@
 
     </script>
     <script>
-        $('.tags_container').click(function (event) {
+        $('.members_container').click(function (event) {
             target = event.target;
-            tag_id = $(target).parents("div").attr('data-id');
-            console.log(tag_id)
-            //如果点击到删除按钮
-            if (target.classList.contains('material-icons')) {
+            m_id = $(target).parents("li").attr('data-id');
+
+            if (target.classList.contains('btn')) {
+                console.log(m_id)
+                currentuser = '{{user.name}}'
+                console.log(currentuser)
+                $('#id-modal-userto').attr("value", m_id)
+                $('.chat_container').empty()
                 $.ajax({
                     type: 'POST',
-                    url: './delete',
+                    url: './chatall',
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     data: JSON.stringify({
-                        'tag_id': tag_id,
+                        'userto': m_id,
                     }),
                     success: function (r) {
                         console.log(r)
-                        t = `[data-id='${tag_id}']`
-                        $(t).remove()
+                        let cct = $('.chat_container')
+                        let last = 0
+                        for (let i in r) {
+                            if (r[i].userfrom != currentuser) {
+                                cct.append(
+                                    `
+                                    <a href="#!" class="collection-item red-text">${r[i].updated_time}@${r[i].title}</a>
+                                    `
+                                )
+
+                            }
+                            else {
+                                cct.append(
+                                    `
+                                    <a href="#!" class="collection-item blue-text">${r[i].updated_time}@${r[i].title}</a>
+                                    `
+                                )
+                            }
+                            $("#id-modal-title2").focus();
+                        }
+
                     }
                 }).fail(function (jqXHR, textStatus, errorThrown) {
                     //错误信息

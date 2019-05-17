@@ -13,7 +13,8 @@ class User(Document, Model):
         'password'
         'updated_time',
         'icon',
-        'performance'
+        'performance',
+        'friend'
 
         # 'user'
     ]
@@ -25,7 +26,7 @@ class User(Document, Model):
     icon = StringField(max_length=100)
     updated_time = IntField()
     performance = IntField()
-
+    friend = ListField(StringField())
 
     def salted_password(pwd):
         salt = '$!@><?>HUI&DWQa`'
@@ -88,3 +89,31 @@ class User(Document, Model):
             return user
         else:
             return None
+
+    @classmethod
+    def get_all_friend(cls, u):
+        flist = u.friend
+        list = []
+        for f in flist:
+            t = User.get_one_by(user_id=f)
+            d = dict(
+                user_id=t.user_id,
+                name=t.name,
+                icon=t.icon,
+                email=t.email
+            )
+            list.append(d)
+        return json.dumps(list)
+
+    @classmethod
+    def addfriend(cls, form, u):
+        f = User.get_one_by(email=form['email'])
+        print('f', f)
+        if f.user_id not in u.friend:
+            u.friend.append(f.user_id)
+            u.save()
+        if u.user_id not in f.friend:
+            f.friend.append(u.user_id)
+            f.save()
+            return json.dumps('1')
+        return json.dumps('0')

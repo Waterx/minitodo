@@ -42,7 +42,47 @@ class Chat(Document, Model):
             readed = False
         )
         t.save()
-        return json.dumps(t.chat_id)
+        d = dict(
+            chat_id = t.chat_id,
+            updated_time=t.updated_time,
+            title = t.title
+        )
+        return json.dumps(d)
+
+    @classmethod
+    def chatall(cls, u1, u2):
+        u1 = User.get_one_by(user_id=u1)
+        u2 = User.get_one_by(user_id=u2)
+        list1 = Chat.objects(userfrom=u1, userto=u2)
+        list2 = Chat.objects(userto=u1, userfrom=u2)
+        list = []
+
+        for l in list1:
+            td = {
+                'updated_time': l.updated_time,
+                'title': l.title,
+                'userfrom': l.userfrom.name,
+                'userto': l.userto.name
+
+            }
+            list.append(td)
+
+        for l in list2:
+            td = {
+                'updated_time': l.updated_time,
+                'title': l.title,
+                'userfrom': l.userfrom.name,
+                'userto': l.userto.name
+            }
+            list.append(td)
+
+        def taket(c):
+            return c['updated_time']
+        list.sort(key=taket)
+        print(list)
+        return json.dumps(list)
+
+
     @classmethod
     def changereaded(cls, cid):
         c = Chat.get_one_by(chat_id=cid)
