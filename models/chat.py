@@ -45,16 +45,23 @@ class Chat(Document, Model):
         d = dict(
             chat_id = t.chat_id,
             updated_time=t.updated_time,
-            title = t.title
+            title = t.title,
+            userfromicon=u1.icon,
+            usertoicon=u2.icon
         )
         return json.dumps(d)
 
     @classmethod
-    def chatall(cls, u1, u2):
+    def chatall(cls, u1, u2, rtime):
         u1 = User.get_one_by(user_id=u1)
         u2 = User.get_one_by(user_id=u2)
-        list1 = Chat.objects(userfrom=u1, userto=u2)
-        list2 = Chat.objects(userto=u1, userfrom=u2)
+        if rtime is None:
+            list1 = Chat.objects(userfrom=u1, userto=u2)
+            list2 = Chat.objects(userto=u1, userfrom=u2)
+        else:
+            list1 = Chat.objects(userfrom=u1, userto=u2, updated_time__gt=rtime)
+            list2 = Chat.objects(userto=u1, userfrom=u2, updated_time__gt=rtime)
+            # list2 = []
         list = []
 
         for l in list1:
@@ -62,7 +69,9 @@ class Chat(Document, Model):
                 'updated_time': l.updated_time,
                 'title': l.title,
                 'userfrom': l.userfrom.name,
-                'userto': l.userto.name
+                'userto': l.userto.name,
+                'userfromicon':l.userfrom.icon,
+                'usertoicon': l.userto.icon
 
             }
             list.append(td)
@@ -72,7 +81,9 @@ class Chat(Document, Model):
                 'updated_time': l.updated_time,
                 'title': l.title,
                 'userfrom': l.userfrom.name,
-                'userto': l.userto.name
+                'userto': l.userto.name,
+                'userfromicon': l.userfrom.icon,
+                'usertoicon': l.userto.icon
             }
             list.append(td)
 

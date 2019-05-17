@@ -54,5 +54,14 @@ def chatall():
     u = current_user()
     form = request.get_json()
     print('!!friend chatall form', form)
-    t = Chat.chatall(u.user_id, form['userto'])
+    t = Chat.chatall(u.user_id, form['userto'], None)
     return t
+
+@main.route("/chatre", methods=['POST'])
+def chatre():
+    u = current_user()
+    form = request.get_json()
+    print('!!friend chatre form', form)
+    t = Chat.chatall(u.user_id, form['userto'], form['last'])
+    return t
+    pass

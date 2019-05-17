@@ -17,6 +17,11 @@
         .members_container {
             width: 75%;
         }
+
+        .small {
+            width: 20px;
+            height: 20px;
+        }
     </style>
 </head>
 
@@ -165,7 +170,10 @@
                         log(m); // show response from the script.
                         $('.chat_container').append(
                             `
-                            <a href="#!" class="collection-item blue-text">${m.updated_time}@${m.title}</a>
+                            <a href="#!" class="collection-item blue-text"><img src=${m.userfromicon} alt="" class='small'>
+                            ${m.updated_time}@${m.title}
+                            
+                            </a>
                             `
                         )
                     }
@@ -237,6 +245,7 @@
             m_id = $(target).parents("li").attr('data-id');
 
             if (target.classList.contains('btn')) {
+                clearInterval()
                 console.log(m_id)
                 currentuser = '{{user.name}}'
                 console.log(currentuser)
@@ -256,22 +265,68 @@
                         let last = 0
                         for (let i in r) {
                             if (r[i].userfrom != currentuser) {
+                                last = r[i].updated_time
                                 cct.append(
                                     `
-                                    <a href="#!" class="collection-item red-text">${r[i].updated_time}@${r[i].title}</a>
+                                    <a href="#!" class="collection-item red-text"><img src=${r[i].userfromicon} alt="" class='small'>
+                                    ${r[i].updated_time}@${r[i].title}
+                                        </a>
+                                    `
+                                )
+                            }
+                            else {
+                                last = r[i].updated_time
+                                cct.append(
+                                    `
+                                    <a href="#!" class="collection-item blue-text"><img src=${r[i].userfromicon} alt="" class='small'>
+                                    ${r[i].updated_time}@${r[i].title}</a>
                                     `
                                 )
 
                             }
-                            else {
-                                cct.append(
-                                    `
-                                    <a href="#!" class="collection-item blue-text">${r[i].updated_time}@${r[i].title}</a>
-                                    `
-                                )
-                            }
-                            $("#id-modal-title2").focus();
+
                         }
+                        window.setInterval(function () {
+                            /// call your function here
+                            $.ajax({
+                                type: 'POST',
+                                url: './chatre',
+                                dataType: "json",
+                                contentType: "application/json; charset=utf-8",
+                                data: JSON.stringify({
+                                    'last': last,
+                                    'userto': m_id,
+                                }),
+                                success: function (r) {
+                                    console.log(r)
+                                    let cct = $('.chat_container')
+                                    for (let i in r) {
+                                        if (r[i].userfrom != currentuser) {
+                                            last = r[i].updated_time
+                                            cct.append(
+                                                `
+                                                <a href="#!" class="collection-item red-text"><img src=${r[i].userfromicon} alt="" class='small'>
+                                                ${r[i].updated_time}@${r[i].title}</a>
+                                                `
+                                            )
+                                        }
+                                        // else {
+                                        //     last = r[i].updated_time
+                                        //     cct.append(
+                                        //         `
+                                        //         <a href="#!" class="collection-item blue-text">${r[i].updated_time}@${r[i].title}</a>
+                                        //         `
+                                        //     )
+
+                                        // }
+
+                                    }
+                                }
+                            }).fail(function (jqXHR, textStatus, errorThrown) {
+                                //错误信息
+                                console.log("AJAX FAIL FAIL")
+                            });
+                        }, 1000);
 
                     }
                 }).fail(function (jqXHR, textStatus, errorThrown) {
